@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<% if flash[:error] %>
+  <div id="error_explanation">
+    <ul>
+      <li><%= flash[:error] %></li>
+    </ul>
+  </div>
+<% end %>
+
+<p>
+  <b>Name:</b>
+  <%= @article.name %>
+</p>
+
+<p>
+  <b>Content:</b>
+  <%= @article.content %>
+</p>
+
+<p>
+ <%= t('author') %>: <%= @article.user.display_name %>, <%= t('date_created') %>: <%= l @article.created_at, :format => :long %>
+</p>
+
+<% if can_edit @article %>
+  <%= link_to t('edit'), edit_article_path(@article) %> |
+<% end %>
+
+<%= link_to t('back'), articles_path %>
+
+<% if user_signed_in? %>
+  <h2>New Comment</h2>
+  <%= form_for [@article, Comment.new] do |f| %>
+    <p><%= f.label :name %> <%= f.text_field :name %></p>
+    <p><%= f.text_area :content, :rows => 10 %></p>
+    <p><%= f.submit %></p>
+  <% end %>
+<% else %>
+  <h4><%= t 'loggin_to_add_comments' %></h4>
+<% end %>
+
+<% if @comments.size > 0 %>
+  <h2>Comments</h2>
+  <% for comment in @comments %>
+    <h3><%= comment.name %></h3>
+    <p><%= comment.content %></p>
+  <% end %>
+  <%= paginate @comments, :window => 2 %>
+<% end %>
+

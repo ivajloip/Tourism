@@ -2,4 +2,26 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  articles: 
+    name: "Articles"
+  greet_username: "%{message}, %{user}!"
+
+  sign_up: 'Sign up'
+
+  helpers:
+    label:
+      article:
+        body: 'Write your entire text here'
+
+  unsufficient_privileges: "You don't have the required permissions to perform this action"
+  date_created: "Published on"
+  edit: "Edit"
+  back: "Back"
+  apply: "Apply"
+
+  time:
+    formats:
+      default: "%Y/%m/%d"
+      short: "%b %d"
+      long: "%B %d, %Y at %H:%M"
+

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <%= image_tag @user.avatar.url(:small) %>
+</p
+
+<p>
+  <span class="bold"><%= t('display_name')%>:</span>
+  <%= @user.display_name %>
+</p>
+
+<p>
+  <span class="bold"><%= t('email')%>:</span>
+  <%= @user.email %>
+</p>
+
+<p>
+  <span class="bold"><%= t('articles.count')%>:</span>
+  <%= @user.articles.count %>
+</p>
+
+
+<%= link_to t('Edit'), edit_user_path(@user) %> |
+<%= link_to t('back'), users_path %>

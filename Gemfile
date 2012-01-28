@@ -10,7 +10,12 @@ gem 'therubyracer', :platforms => :ruby
 gem 'execjs'
 gem 'bson_ext'
 gem 'mongoid'
-gem "mongoid-paperclip", :require => "mongoid_paperclip"
+gem 'mongoid-paperclip', :require => 'mongoid_paperclip'
+gem 'carrierwave'
+gem 'mini_magick'
+gem 'kaminari'
+
+gem 'devise'
 
 # Gems used only for assets and not required
 # in production environments by default.

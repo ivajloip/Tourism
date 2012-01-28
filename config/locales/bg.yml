@@ -1,0 +1,19 @@
+bg:
+  articles:
+    name: "Статии"
+  show: 'Виж'
+  back: 'Назад'
+  home: 'Начало'
+  sign_up: 'Регистрация'
+
+  helpers:
+    label:
+      article:
+        name: 'Заглавие на статията'
+      comment:
+        name: 'Заглавие на коментара'
+      user: 
+        display_name: 'Име'
+        email: 'e-мейл'
+        password: 'Парола'
+        password_confirmation: 'Потвърждение на паролата'

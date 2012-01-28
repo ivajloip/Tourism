@@ -1,4 +1,24 @@
 Tourism::Application.routes.draw do
+  resources :provinces
+
+  devise_for :users
+  
+  devise_scope :user do
+    get "/logout" => "devise/sessions#destroy"
+  end
+
+  resources :users
+
+  resources :provinces
+
+  resources :articles do 
+    resources :comments
+  end
+
+  root :to => 'articles#index'
+
+#  match '/users', :to => 'users#show', :via => 'get'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

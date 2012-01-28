@@ -1,0 +1,28 @@
+<h2><%= t('edit_user') %></h2>
+
+<%= form_for(@user, :url => user_path, :html => { :multipart => true } ) do |f| %>
+
+  <div><%= f.label :display_name %><br />
+  <%= f.text_field :display_name %></div>
+
+  <div><%= f.label :email %><br />
+  <%= f.email_field :email %></div>
+
+  <div><%= f.label :password %><br />
+  <%= f.password_field :password %></div>
+
+  <div><%= f.label :password_confirmation %><br />
+  <%= f.password_field :password_confirmation %></div>
+
+  <div>
+     <%= image_tag @user.avatar.url %>
+     <br />
+     <%= f.label :new_avatar %> <br />
+     <%= f.file_field :avatar %>
+  </div>
+
+  <div class="actions"><%= f.submit t('apply') %></div>
+<% end %>
+
+<%= link_to t('back'), users_path %>
+

@@ -1,0 +1,9 @@
+<nav>
+  <section>
+    <ul>
+      <% menu_links.each do |key, path| %>
+        <%= link_to t(key), path %>
+      <% end %>
+    </ul>
+  </section>
+</nav>
