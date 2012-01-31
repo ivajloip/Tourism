@@ -1,4 +1,6 @@
 Tourism::Application.routes.draw do
+  resources :tags
+
   resources :provinces
 
   devise_for :users
@@ -13,6 +15,13 @@ Tourism::Application.routes.draw do
 
   resources :articles do 
     resources :comments
+
+    member do
+      put 'like'
+      put 'dislike'
+      put 'follow'
+      put 'unfollow'
+    end
   end
 
   root :to => 'articles#index'

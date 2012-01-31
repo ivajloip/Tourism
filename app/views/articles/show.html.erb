@@ -1,16 +1,10 @@
 <p id="notice"><%= notice %></p>
 
-<% if flash[:error] %>
-  <div id="error_explanation">
-    <ul>
-      <li><%= flash[:error] %></li>
-    </ul>
-  </div>
-<% end %>
+<%= render '/shared/error' %>
 
 <p>
-  <b>Name:</b>
-  <%= @article.name %>
+  <b><%= t 'title' %>:</b>
+  <%= @article.title %>
 </p>
 
 <p>
@@ -19,8 +13,29 @@
 </p>
 
 <p>
- <%= t('author') %>: <%= @article.user.display_name %>, <%= t('date_created') %>: <%= l @article.created_at, :format => :long %>
+  <b><%= t 'province' %>:</b>
+  <%= @article.province.name %>
 </p>
+
+<p>
+  <b><%= t 'tags.title' %>:</b>
+  <%= @article.tags.collect(&:name).join(', ') %>
+</p>
+
+<p>
+ <%= t('author') %>: <%= @article.author.display_name %>, <%= t('date_created') %> <%= l @article.created_at, :format => :long %>
+</p>
+
+<p id="votes">
+  <%= render '/articles/votes' %>
+</p>
+
+<%= button_to t("button.like"), { :action => "like" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
+<%= button_to t("button.dislike"), { :action => "dislike" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
+
+<span id="follow_buttons">
+  <%= render 'articles/follow' %>
+</span>
 
 <% if can_edit @article %>
   <%= link_to t('edit'), edit_article_path(@article) %> |
@@ -29,22 +44,18 @@
 <%= link_to t('back'), articles_path %>
 
 <% if user_signed_in? %>
-  <h2>New Comment</h2>
-  <%= form_for [@article, Comment.new] do |f| %>
-    <p><%= f.label :name %> <%= f.text_field :name %></p>
-    <p><%= f.text_area :content, :rows => 10 %></p>
-    <p><%= f.submit %></p>
+<section>
+  <h2><%= t 'comments' %></h2>
+  <%= form_for [@article, Comment.new], :remote => true do |f| %>
+    <%= image_tag current_user.avatar.url(:very_small), :class => 'comment_picture' %>
+    <%= f.text_area :content, :rows => 3, :class => 'comment_content' %>
+    <div class="comment_create"><%= f.submit %></div>
   <% end %>
+</section>
 <% else %>
   <h4><%= t 'loggin_to_add_comments' %></h4>
 <% end %>
 
-<% if @comments.size > 0 %>
-  <h2>Comments</h2>
-  <% for comment in @comments %>
-    <h3><%= comment.name %></h3>
-    <p><%= comment.content %></p>
-  <% end %>
-  <%= paginate @comments, :window => 2 %>
-<% end %>
-
+<span id="comments">
+  <%= render 'comments' %>
+</span>

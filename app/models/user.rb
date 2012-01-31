@@ -10,7 +10,10 @@ class User
   field :display_name
   field :admin
 
-  references_many :articles
+  references_many :articles, :inverse_of => :author
+  references_and_referenced_in_many :follows, :class_name => 'User', :inverse_of => :following
+  references_and_referenced_in_many :likes, :class_name => 'User', :inverse_of => :liking
+  references_and_referenced_in_many :dislikes, :class_name => 'User', :inverse_of => :disliking
 
   attr_accessible :display_name, :email, :avatar
 
@@ -20,6 +23,7 @@ class User
     :styles => {
         :original => ['1920x1680>', :png],
         :small    => ['128x128#',   :png],
+        :very_small => ['60x60#', :png],
         :medium   => ['256x256#',    :png],
         :large    => ['768x768>',   :png],
     }

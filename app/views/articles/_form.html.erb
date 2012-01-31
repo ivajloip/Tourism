@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :title %>
   </div>
   <div class="field">
     <%= f.label :content %><br />
@@ -22,6 +22,10 @@
   <div class="field">
     <%= f.label :province_id %><br />
     <%= f.collection_select :province_id, Province.all, :id, :name %>
+  </div>
+  <div class="field">
+    <%= f.label :tag_ids %><br />
+    <%= f.collection_select :tag_ids, Tag.all, :id, :name, {}, :multiple => true, :size => 6 %>
   </div>
   <div class="actions">
     <%= f.submit %>

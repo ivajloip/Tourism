@@ -20,7 +20,7 @@ class ArticlesController < ApplicationController
   # GET /articles/1.json
   def show
     @article = Article.find(params[:id])
-    @comments = @article.comments.page(params[:page]).per(2)
+    @comments = @article.comments.order_by(:name, :asc).page(params[:page]).per(@page_size)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -48,7 +48,7 @@ class ArticlesController < ApplicationController
   # POST /articles.json
   def create
     @article = Article.new(params[:article])
-    @article.user = current_user
+    @article.author = current_user
 
     respond_to do |format|
       if @article.save
@@ -87,5 +87,96 @@ class ArticlesController < ApplicationController
       format.html { redirect_to articles_url }
       format.json { head :ok }
     end
+  end
+
+
+  # POST /articles/1/like
+  # POST /articles/1/likes.json
+  def like
+    @article = Article.find(params[:id])
+
+    liking_ids = @article.liking_ids
+    disliking_ids = @article.disliking_ids
+
+    disliking_ids.delete(current_user._id)
+
+    unless liking_ids.include? current_user._id
+      liking_ids << current_user._id
+    end
+
+    @article.save
+
+    respond_to do |format|
+      format.html { redirect_to @article, notice: 'Article was successfully liked.' }
+      format.json { head :ok }
+      format.js { render '/articles/votes' }
+    end
+  end
+
+
+  # POST /articles/1/dislike
+  # POST /articles/1/dislikes.json
+  def dislike
+    @article = Article.find(params[:id])
+    liking_ids = @article.liking_ids
+    disliking_ids = @article.disliking_ids
+
+    liking_ids.delete(current_user._id)
+
+    logger.debug "liking_ids contrains current_user? #{liking_ids.include? current_user._id}"
+
+    unless disliking_ids.include? current_user._id
+      disliking_ids << current_user._id
+    end
+
+    @article.save
+
+    respond_to do |format|
+      format.html { redirect_to @article, notice: 'Article was successfully disliked.' }
+      format.json { head :ok }
+      format.js { render '/articles/votes' }
+    end
+  end
+
+
+  # POST /articles/1/follow
+  # POST /articles/1/follow.json
+  def follow
+    @article = Article.find(params[:id])
+    following = @article.following
+
+    unless following.include? current_user
+      following << current_user
+    end
+
+    @article.save
+
+    respond_to do |format|
+      format.html { redirect_to @article, notice: 'Article was successfully followed.' }
+      format.json { head :ok }
+      format.js { render '/articles/votes' }
+    end
+  end
+
+
+  # POST /articles/1/unfollow
+  # POST /articles/1/unfollow.json
+  def unfollow
+    @article = Article.find(params[:id])
+    following_ids = @article.following_ids
+
+    following_ids.delete(current_user._id)
+
+    @article.save
+
+    respond_to do |format|
+      format.html { redirect_to @article, notice: 'Article was successfully unfollowed.' }
+      format.json { head :ok }
+      format.js { render '/articles/votes' }
+    end
+  end
+
+  def find
+    
   end
 end

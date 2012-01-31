@@ -2,8 +2,8 @@
 
 <table>
   <tr>
-    <th>Name</th>
-    <th>Content</th>
+    <th><%= t('title') %></th>
+    <th><%= t('author') %></th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,8 +11,8 @@
 
 <% @articles.each do |article| %>
   <tr>
-    <td><%= article.name %></td>
-    <td><%= article.content %></td>
+    <td><%= article.title %></td>
+    <td><%= article.author.display_name %></td>
     <td><%= link_to 'Show', article %></td>
     <td><%= link_to 'Edit', edit_article_path(article) %></td>
     <td><%= link_to 'Destroy', article, confirm: 'Are you sure?', method: :delete %></td>
@@ -24,4 +24,6 @@
 
 <%= paginate @articles, :window => 2 %>
 
-<%= link_to 'New Article', new_article_path %>
+<% if user_signed_in? %>
+  <%= link_to 'New Article', new_article_path %>
+<% end %>

@@ -2,6 +2,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :set_locale
+
+  def initialize 
+    @page_size = 2
+    super
+  end
    
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
@@ -21,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_edit_permissions entity
-    unless entity.user == current_user or current_user.admin
+    unless entity.author == current_user or current_user.admin
       logger.debug "Redirected #{current_user} who was tring to edit #{entity}"
       flash[:error] = I18n.t 'unsufficient_privileges'
       redirect_to :action => 'show'

@@ -18,10 +18,22 @@ en:
   edit: "Edit"
   back: "Back"
   apply: "Apply"
+  liking: 'Liking'
+  disliking: 'Disliking'
+  following: 'Following'
 
   time:
     formats:
       default: "%Y/%m/%d"
       short: "%b %d"
       long: "%B %d, %Y at %H:%M"
-
+  tags:
+    mountain_bike_riding: "Mountain bike riding"
+    river_fishing: "River Fishing"
+    title: 'Tags'
+    
+  button:
+    like: 'Like'
+    dislike: 'Dislike'
+    follow: 'Follow'
+    unfollow: 'Unfollow'

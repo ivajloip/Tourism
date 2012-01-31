@@ -1,0 +1,8 @@
+<% if @comments.size > 0 %>
+  <h2>Comments</h2>
+  <% for comment in @comments %>
+    <h3><%= comment.name %></h3>
+    <p><%= comment.content %></p>
+  <% end %>
+  <%= paginate @comments, :window => 2, :custom_url => article_path(@article) %>
+<% end %>
