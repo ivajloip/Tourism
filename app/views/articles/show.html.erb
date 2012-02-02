@@ -45,10 +45,10 @@
 
 <% if user_signed_in? %>
 <section>
-  <h2><%= t 'comments' %></h2>
+  <h2><%= t 'comments.title' %></h2>
   <%= form_for [@article, Comment.new], :remote => true do |f| %>
     <%= image_tag current_user.avatar.url(:very_small), :class => 'comment_picture' %>
-    <%= f.text_area :content, :rows => 3, :class => 'comment_content' %>
+    <%= f.text_area :content, :rows => 3, :class => 'comment_content', :title => t('comments.add_comment'), :id => 'comment_content' %>
     <div class="comment_create"><%= f.submit %></div>
   <% end %>
 </section>

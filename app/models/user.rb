@@ -14,6 +14,8 @@ class User
   references_and_referenced_in_many :follows, :class_name => 'User', :inverse_of => :following
   references_and_referenced_in_many :likes, :class_name => 'User', :inverse_of => :liking
   references_and_referenced_in_many :dislikes, :class_name => 'User', :inverse_of => :disliking
+  references_and_referenced_in_many :likes_comments, :class_name => 'User', :inverse_of => :liking
+  references_and_referenced_in_many :dislikes_comments, :class_name => 'User', :inverse_of => :disliking
 
   attr_accessible :display_name, :email, :avatar
 

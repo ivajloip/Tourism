@@ -14,7 +14,10 @@ Tourism::Application.routes.draw do
   resources :provinces
 
   resources :articles do 
-    resources :comments
+    resources :comments do
+      put 'like'
+      put 'dislike'
+    end
 
     member do
       put 'like'

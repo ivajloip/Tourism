@@ -22,6 +22,10 @@ en:
   disliking: 'Disliking'
   following: 'Following'
 
+  comments:
+    add_comment: 'Add comment here'
+    title: 'Comments'
+
   time:
     formats:
       default: "%Y/%m/%d"

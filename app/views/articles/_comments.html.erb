@@ -1,8 +1,14 @@
 <% if @comments.size > 0 %>
   <h2>Comments</h2>
   <% for comment in @comments %>
-    <h3><%= comment.name %></h3>
+    <%= image_tag current_user.avatar.url(:very_small), :class => 'comment_picture' %>
     <p><%= comment.content %></p>
+
+    <p><%= comment.author.display_name %>, <%= t('date_created') %> <%= l @article.created_at, :format => :long %></p>
+    <span id='<%= "#{comment._id}_votes"%>' ><%= votes comment %></span>
+
+    <%= button_to t("button.like"), article_comment_like_path(@article, comment), :method => :put, :remote => true, :form_class => 'vote_button' %>
+    <%= button_to t("button.dislike"), article_comment_dislike_path(@article, comment), :method => :put, :remote => true, :form_class => 'vote_button' %>
   <% end %>
   <%= paginate @comments, :window => 2, :custom_url => article_path(@article) %>
 <% end %>
