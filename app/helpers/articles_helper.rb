@@ -16,4 +16,11 @@ module ArticlesHelper
     result.join(', ')
   end
 
+  def follow_buttons
+    if user_signed_in? and not @article.following.include?(current_user)
+      button_to t("button.follow"), { :action => "follow" }, :method => :put, :remote => true
+    else
+      button_to t("button.unfollow"), { :action => "unfollow" }, :method => :put, :remote => true
+    end
+  end
 end

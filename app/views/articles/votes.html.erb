@@ -1,2 +1,2 @@
-<%= rerender "#{@comment.nil? ? '' : @comment._id.to_s + '_'}votes", '/articles/votes' %>
-<%= @article.respond_to?(:following) and rerender 'follow_buttons', '/articles/follow' %>
+<%= rerender("votes") { votes @article } %>
+<%= rerender('follow_buttons') { follow_buttons } %>

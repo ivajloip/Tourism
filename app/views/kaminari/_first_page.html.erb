@@ -7,6 +7,6 @@
     remote:        data-remote
 -%>
 <span class="first">
-  <% url = pagination_url binding, 1 %>
+  <% url = pagination_url url, 1 %>
   <%= link_to_unless current_page.first?, raw(t 'views.pagination.first'), url, :remote => remote %>
 </span>

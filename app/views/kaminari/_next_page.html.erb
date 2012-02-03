@@ -7,6 +7,6 @@
     remote:        data-remote
 -%>
 <span class="next">
-  <% url = pagination_url(binding, current_page.to_i + 1) %>
+  <% url = pagination_url(url, current_page.to_i + 1) %>
   <%= link_to_unless current_page.last?, raw(t 'views.pagination.next'), url, :rel => 'next', :remote => remote %>
 </span>

@@ -7,6 +7,6 @@
     remote:        data-remote
 -%>
 <span class="prev">
-  <% url = pagination_url(binding, current_page.to_i - 1) %>
+  <% url = pagination_url(url, current_page.to_i - 1) %>
   <%= link_to_unless current_page.first?, raw(t 'views.pagination.previous'), url, :rel => 'prev', :remote => remote %>
 </span>

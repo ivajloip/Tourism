@@ -1,14 +1,28 @@
 <% if @comments.size > 0 %>
   <h2>Comments</h2>
+
+  <ul>
   <% for comment in @comments %>
-    <%= image_tag current_user.avatar.url(:very_small), :class => 'comment_picture' %>
-    <p><%= comment.content %></p>
+    <li>
+      <%= image_tag comment.author.avatar.url(:very_small), :class => 'comment_picture' %>
+      <p><%= comment.content %></p>
 
-    <p><%= comment.author.display_name %>, <%= t('date_created') %> <%= l @article.created_at, :format => :long %></p>
-    <span id='<%= "#{comment._id}_votes"%>' ><%= votes comment %></span>
+      <p><%= comment.author.display_name %>, <%= t('date_created') %> <%= l comment.created_at, :format => :long %></p>
+      <span id='<%= "#{comment._id}_votes"%>' ><%= votes comment %></span>
+        
+      <div>
+        <%= button_to t("button.like"), article_comment_like_path(@article, comment), 
+              :method => :put, :remote => true, :form_class => 'vote_button' %>
+        <%= button_to t("button.dislike"), article_comment_dislike_path(@article, comment), 
+              :method => :put, :remote => true, :form_class => 'vote_button' %>
+      </div>
 
-    <%= button_to t("button.like"), article_comment_like_path(@article, comment), :method => :put, :remote => true, :form_class => 'vote_button' %>
-    <%= button_to t("button.dislike"), article_comment_dislike_path(@article, comment), :method => :put, :remote => true, :form_class => 'vote_button' %>
+      <div class="clearfix" />
+    </li>
   <% end %>
-  <%= paginate @comments, :window => 2, :custom_url => article_path(@article) %>
+  </ul>
+
+  <div>
+    <%= paginate @comments, :window => 2, :params => { :controller => 'articles', :action => 'show', :id => @article._id } %>
+  </div>
 <% end %>

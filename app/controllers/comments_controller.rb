@@ -39,12 +39,10 @@ class CommentsController < ApplicationController
 
     @comment.save
 
-    @article = @comment
-
     respond_to do |format|
       format.html { redirect_to @comment, notice: 'Article was successfully liked.' }
       format.json { head :ok }
-      format.js { render '/articles/votes' }
+      format.js { render '/articles/comment_votes' }
     end
   end
 
@@ -66,12 +64,10 @@ class CommentsController < ApplicationController
 
     @comment.save
 
-    @article = @comment
-
     respond_to do |format|
       format.html { redirect_to @comment, notice: 'Article was successfully disliked.' }
       format.json { head :ok }
-      format.js { render '/articles/votes' }
+      format.js { render '/articles/comment_votes' }
     end
   end
 end
