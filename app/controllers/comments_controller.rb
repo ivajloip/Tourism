@@ -28,14 +28,7 @@ class CommentsController < ApplicationController
   def like
     @comment = Article.find(params[:article_id]).comments.find(params[:comment_id])
 
-    liking_ids = @comment.liking_ids
-    disliking_ids = @comment.disliking_ids
-
-    disliking_ids.delete(current_user._id)
-
-    unless liking_ids.include? current_user._id
-      liking_ids << current_user._id
-    end
+    @comment.like(current_user)
 
     @comment.save
 
@@ -53,14 +46,7 @@ class CommentsController < ApplicationController
     logger.debug params
     @comment = Article.find(params[:article_id]).comments.find(params[:comment_id])
 
-    liking_ids = @comment.liking_ids
-    disliking_ids = @comment.disliking_ids
-
-    liking_ids.delete(current_user._id)
-
-    unless disliking_ids.include? current_user._id
-      disliking_ids << current_user._id
-    end
+    @comment.dislike(current_user)
 
     @comment.save
 

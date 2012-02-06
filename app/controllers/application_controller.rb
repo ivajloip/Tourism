@@ -26,9 +26,10 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_edit_permissions entity
-    unless entity.author == current_user or current_user.admin
+    unless entity.editable_by?(current_user)
       logger.debug "Redirected #{current_user} who was tring to edit #{entity}"
-      flash[:error] = I18n.t 'unsufficient_privileges'
+
+      flash[:error] = I18n.t 'unsufficient_privileges', :default => 'You don\'t have the persmissions required to edit this document'
       redirect_to :action => 'show'
     end
   end

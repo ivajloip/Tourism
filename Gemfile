@@ -9,7 +9,7 @@ gem 'rails', '3.1.3'
 gem 'therubyracer', :platforms => :ruby
 gem 'execjs'
 gem 'bson_ext'
-gem 'mongoid'
+gem 'mongoid', '2.4.0'
 gem 'mongoid-paperclip', :require => 'mongoid_paperclip'
 gem 'carrierwave'
 gem 'mini_magick'
@@ -39,7 +39,14 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end
+
 group :test do
   # Pretty printed test output
   gem 'turn', '0.8.2', :require => false
+  gem 'database_cleaner'
+  gem 'shoulda-matchers'
 end

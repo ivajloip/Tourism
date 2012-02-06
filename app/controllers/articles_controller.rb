@@ -8,7 +8,13 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.order_by(:created_at, :desc).page(params[:page]).per(2)
+    query = synthesize_query
+    
+    logger.debug("-----------#{query}----------")
+    
+    @articles = Article.where(query).order_by(:created_at, :desc).page(params[:page]).per(@page_size)
+    @authors = User.all
+    @article = Article.new
 
     respond_to do |format|
       format.html # index.html.erb
@@ -89,20 +95,12 @@ class ArticlesController < ApplicationController
     end
   end
 
-
   # POST /articles/1/like
   # POST /articles/1/likes.json
   def like
     @article = Article.find(params[:id])
 
-    liking_ids = @article.liking_ids
-    disliking_ids = @article.disliking_ids
-
-    disliking_ids.delete(current_user._id)
-
-    unless liking_ids.include? current_user._id
-      liking_ids << current_user._id
-    end
+    @article.like(current_user)
 
     @article.save
 
@@ -113,21 +111,12 @@ class ArticlesController < ApplicationController
     end
   end
 
-
   # POST /articles/1/dislike
   # POST /articles/1/dislikes.json
   def dislike
     @article = Article.find(params[:id])
-    liking_ids = @article.liking_ids
-    disliking_ids = @article.disliking_ids
 
-    liking_ids.delete(current_user._id)
-
-    logger.debug "liking_ids contrains current_user? #{liking_ids.include? current_user._id}"
-
-    unless disliking_ids.include? current_user._id
-      disliking_ids << current_user._id
-    end
+    @article.dislike(current_user)
 
     @article.save
 
@@ -138,16 +127,12 @@ class ArticlesController < ApplicationController
     end
   end
 
-
   # POST /articles/1/follow
   # POST /articles/1/follow.json
   def follow
     @article = Article.find(params[:id])
-    following = @article.following
 
-    unless following.include? current_user
-      following << current_user
-    end
+    @article.follow(current_user)
 
     @article.save
 
@@ -163,9 +148,8 @@ class ArticlesController < ApplicationController
   # POST /articles/1/unfollow.json
   def unfollow
     @article = Article.find(params[:id])
-    following_ids = @article.following_ids
 
-    following_ids.delete(current_user._id)
+    @article.unfollow(current_user)
 
     @article.save
 
@@ -178,5 +162,50 @@ class ArticlesController < ApplicationController
 
   def find
     
+  end
+
+private
+  def synthesize_query
+    unless params[:query] 
+      return nil
+    end
+
+    result = {}
+
+    logger.debug("-----------#{params}---------")
+
+    form_param = :article
+
+    result[:created_at] = created_at_limits
+
+    result[:author_id] = params[form_param]['author_id']
+
+    result[:tag_ids.all] = params[form_param]['tag_ids']
+
+    result.merge(synthesize_mandatory_fields_query).select { |key, value| not value.blank? }
+  end
+
+  def created_at_limits
+    result = {}
+
+    result['$gte'] = time_selected('start_date') 
+    result['$lt'] = time_selected('end_date') 
+
+    result.reject { |key,value| value.blank? }
+  end
+
+  def time_selected prefix
+    date = (1..3).map { |i| params['query'][prefix + "(#{i}i)"] }
+
+    date.none?(&:blank?) ? Time.new(*date) : nil
+  end
+
+  def synthesize_mandatory_fields_query
+    exceptions = ['tag_ids']
+    fields = Article.accessible_attributes.to_a - exceptions
+    fields += fields.map { |field| field + '_id' } + fields.map { |field| field + '_ids' }
+
+    # TODO: Make this the other way around -> from fields take some
+    params[:article].select { |key, value| fields.include?(key) }
   end
 end

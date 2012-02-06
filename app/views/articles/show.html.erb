@@ -23,18 +23,18 @@
 </p>
 
 <p>
- <%= t('author') %>: <%= @article.author.display_name %>, <%= t('date_created') %> <%= l @article.created_at, :format => :long %>
+ <%= t('author') %>: <%= @article.author_name %>, <%= t('date_created') %> <%= l @article.created_at, :format => :long %>
 </p>
 
 <p id="votes">
-  <%= render '/articles/votes' %>
+  <%= votes @article %>
 </p>
 
 <%= button_to t("button.like"), { :action => "like" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
 <%= button_to t("button.dislike"), { :action => "dislike" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
 
 <span id="follow_buttons">
-  <%= render 'articles/follow' %>
+  <%= follow_buttons %>
 </span>
 
 <% if can_edit @article %>

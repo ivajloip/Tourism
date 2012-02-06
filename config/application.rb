@@ -52,6 +52,8 @@ module Tourism
     # Configuring the generators to use mongo
     config.generators do |g|
       g.orm :mongoid
+      g.test_framework :rspec, :view_specs => false, :fixture => true
+      g.fixture_replacement :factory_girl, :dir => 'spec/factories'
     end
   end
 end

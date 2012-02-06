@@ -1,5 +1,14 @@
 <h1>Listing articles</h1>
 
+<%= form_for Article.new, :method => :get do |f| %>
+  <%= render :partial => 'fields', locals: { :f => f, :fields_to_render => [ :author, :end_date, :start_date ] } %>
+
+  <div class="actions">
+    <%= f.submit t(:search, :default => 'Search') %>
+  </div>
+<% end %>
+
+
 <table>
   <tr>
     <th><%= t('title') %></th>
@@ -12,7 +21,7 @@
 <% @articles.each do |article| %>
   <tr>
     <td><%= article.title %></td>
-    <td><%= article.author.display_name %></td>
+    <td><%= article.author_name %></td>
     <td><%= link_to 'Show', article %></td>
     <td><%= link_to 'Edit', edit_article_path(article) %></td>
     <td><%= link_to 'Destroy', article, confirm: 'Are you sure?', method: :delete %></td>
