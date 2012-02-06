@@ -7,6 +7,9 @@
 # Ignore bundler config
 /.bundle
 
+# Ignore mailer configuration
+/config/mail_settings
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 

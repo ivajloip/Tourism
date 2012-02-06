@@ -20,6 +20,8 @@ class CommentsController < ApplicationController
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
+
+    Notifier.new_comment(@comment).deliver
   end
 
 

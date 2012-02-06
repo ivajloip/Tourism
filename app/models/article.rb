@@ -62,4 +62,9 @@ class Article
   def following_count
     following_ids.blank? ? 0 : following_ids.count
   end
+
+
+  def followers_emails
+    following.map(&:email)
+  end
 end

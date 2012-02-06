@@ -41,3 +41,9 @@ en:
     dislike: 'Dislike'
     follow: 'Follow'
     unfollow: 'Unfollow'
+
+  new_comment_body: "%{commenter} added comment to article %{article_title} that you follow.\n You can read the comment at %{article_url}.\nIt's unformatted content is: %{comment_body}"
+  new_comment_on: "There is new comment on"
+
+  article:
+    edited: "%{editor} edited article %{article_title} that you follow.\n You can see the change at %{article_url}.\nIt's unformatted content is: %{article_body}"

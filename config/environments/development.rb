@@ -27,4 +27,12 @@ Tourism::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # mailer
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
+
+  raise "There needs to be a config/mail_settings file" unless Rails.root.join('config/mail_settings').exist?
+  config.action_mailer.smtp_settings = eval(Rails.root.join('config/mail_settings').read)
 end
