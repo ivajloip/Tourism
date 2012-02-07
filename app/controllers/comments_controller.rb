@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    @article = Article.find(params[:article_id])
+    @article = find_article
 
     @comment = @article.comments.new(params[:comment])
 
@@ -10,34 +10,28 @@ class CommentsController < ApplicationController
 
     @comments = @article.comments.order_by(:name, :asc).page(params[:page]).per(@page_size)
 
-    respond_to do |format|
-      if @comment.save
+    if @comment.save
+      respond_to do |format|
         format.html { redirect_to @article, :notice => "Comment created!" }
         format.json { render json: @article, status: :created, location: @article }
         format.js { render '/articles/comments' }
-      else
+      end
+
+      Notifier.new_comment(@comment).deliver
+    else
+      respond_to do |format|
         format.html { redirect_to @article }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
-
-    Notifier.new_comment(@comment).deliver
   end
 
 
   # POST /articles/1/comments/1/like
   # POST /articles/1/comments/1/likes.json
   def like
-    @comment = Article.find(params[:article_id]).comments.find(params[:comment_id])
-
-    @comment.like(current_user)
-
-    @comment.save
-
-    respond_to do |format|
-      format.html { redirect_to @comment, notice: 'Article was successfully liked.' }
-      format.json { head :ok }
-      format.js { render '/articles/comment_votes' }
+    vote('Comment was successfully liked.', 'There was an error liking this comment.') do |comment|
+      comment.like(current_user)
     end
   end
 
@@ -45,17 +39,34 @@ class CommentsController < ApplicationController
   # POST /articles/1/comments/1/dislike
   # POST /articles/1/comments/1/dislikes.json
   def dislike
-    logger.debug params
-    @comment = Article.find(params[:article_id]).comments.find(params[:comment_id])
-
-    @comment.dislike(current_user)
-
-    @comment.save
-
-    respond_to do |format|
-      format.html { redirect_to @comment, notice: 'Article was successfully disliked.' }
-      format.json { head :ok }
-      format.js { render '/articles/comment_votes' }
+    vote('Comment was successfully disliked.', 'There was an error disliking this comment.') do |comment|
+      comment.dislike(current_user)
     end
+  end
+
+  private
+
+  def vote success_message, failure_message
+    @article = find_article
+    @comment = @article.comments.find(params[:comment_id])
+
+    yield @comment
+
+    if @comment.save
+      respond_to do |format|
+        format.html { redirect_to @article, notice: success_message }
+        format.json { head :ok }
+        format.js { render '/articles/comment_votes' }
+      end
+    else 
+      respond_to do |format|
+        format.html { redirect_to @article, notice: failure_message }
+        format.json { render json: comment.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def find_article
+    Article.find(params[:article_id])
   end
 end

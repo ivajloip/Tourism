@@ -30,8 +30,8 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
+  config.mock_with :rspec
 
-  config.include Factory::Syntax::Methods
   config.before(:suite) do
     DatabaseCleaner[:mongoid].strategy = :truncation
   end
@@ -43,4 +43,8 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner[:mongoid].clean
   end
+
+  config.include Support::ControllerHelpers, :type => :controller
+  config.include Factory::Syntax::Methods
+  config.include Devise::TestHelpers, :type => :controller
 end

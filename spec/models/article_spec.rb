@@ -28,6 +28,7 @@ describe Article do
   end
 
   describe "(commenting)" do
+    pending "Add tests for commenting on article"
   end
 
 # Voting is tested in comments, I think I can skip it now
@@ -61,9 +62,11 @@ describe Article do
     let(:article) { build :article }
 
     it "Notify followers on edit" do
+      pending "Add tests for article followers notifications on article edit"
     end
 
     it "Notify followers on comment" do
+      pending "Add tests for article followers notifications on article comment"
     end
   end
 end

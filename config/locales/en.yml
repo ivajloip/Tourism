@@ -35,6 +35,10 @@ en:
     mountain_bike_riding: "Mountain bike riding"
     river_fishing: "River Fishing"
     title: 'Tags'
+
+  province:
+    sofia: 'Sofia'
+    title: 'Province'
     
   button:
     like: 'Like'

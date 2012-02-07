@@ -22,7 +22,7 @@ FactoryGirl.define do
   end
 
   factory :province do
-    name 'province'
+    key 'province'
   end
 
   factory :tag do
@@ -30,6 +30,6 @@ FactoryGirl.define do
   end
 
   factory :admin, parent: :user do
-  admin true
+    admin true
   end
 end  

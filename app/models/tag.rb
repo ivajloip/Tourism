@@ -6,6 +6,6 @@ class Tag
   references_and_referenced_in_many :articles, :inverse_of => :tags
 
   def name
-    I18n.t('tags.' + key)
+    I18n.t('tags.' + key, :default => key.capitalize)
   end
 end
