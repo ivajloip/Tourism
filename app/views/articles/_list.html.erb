@@ -1,0 +1,20 @@
+<table>
+  <tr>
+    <th><%= t('title') %></th>
+    <th><%= t('author') %></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @articles.each do |article| %>
+  <tr>
+    <td><%= article.title %></td>
+    <td><%= article.author_name %></td>
+    <td><%= link_to 'Show', article %></td>
+    <td><%= link_to_edit article %></td>
+    <td><%= link_to_delete article %></td>
+  </tr>
+<% end %>
+</table>
+

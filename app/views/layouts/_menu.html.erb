@@ -1,3 +1,6 @@
+<%= "%s, %s" % [t('welcome', :default => 'Welcome'), 
+      user_signed_in? ? current_user.display_name : t('guest', :default => 'Guest')] %>
+
 <nav>
   <section>
     <ul>

@@ -1,6 +1,18 @@
 module ApplicationHelper
   def menu_links 
-    { 'home' => '/', 'articles.name' => articles_path }
+    links = { 'home' => '/', 'articles.name' => articles_path }
+
+    if user_signed_in? 
+      links = links.merge({ 'article.new' => new_article_path, 'user.profile' => edit_user_path(current_user) })
+
+      if current_user.admin?
+        links = links.merge({ 'users.title' => users_path })
+      end
+    else
+      links = links.merge({ 'user.sign_in' => new_user_session_path, 'sign_up' => new_user_registration_path })
+    end
+
+    links
   end
 
   def is_admin

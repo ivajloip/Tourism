@@ -62,8 +62,8 @@ describe CommentsController do
       comment.stub save: true
       create_comment
 
-      controller.should redirect_to(article_url(article)) and 
-        response.request.flash[:notice].should eq "Comment created!"
+      controller.should redirect_to(article) and 
+        flash[:notice].should eq "Comment created!"
     end
 
     it "redirects to the article with no notice of fail" do
@@ -143,6 +143,13 @@ describe CommentsController do
       like_comment
       controller.should redirect_to(article_url(article)) and 
         response.request.flash[:notice].should eq "There was an error liking this comment."
+    end
+
+    it "dislikes the comment on behalf of the user" do
+      comment.should_receive(:dislike).with(current_user)
+      comment.should_receive(:save)
+
+      post :dislike, article_id: article_id, comment_id: comment_id
     end
 
     it "redirects to the article on dislike success" do

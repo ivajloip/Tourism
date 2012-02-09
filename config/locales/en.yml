@@ -4,6 +4,8 @@
 en:
   articles: 
     name: "Articles"
+    list: "Listing Articles"
+    search: "Search for articles"
   greet_username: "%{message}, %{user}!"
 
   sign_up: 'Sign up'

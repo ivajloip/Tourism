@@ -1,6 +1,5 @@
-<h1><%= t('articles.list', :default => "Listing articles") %></h1>
+<h1><%= t('articles.search', :default => "Search for articles") %></h1>
 
-<% if false %>
 <%= form_for Article.new, :method => :get do |f| %>
   <%= render :partial => 'fields', locals: { :f => f, :fields_to_render => [ :author, :end_date, :start_date ] } %>
 
@@ -8,9 +7,8 @@
     <%= f.submit t(:search, :default => 'Search') %>
   </div>
 <% end %>
-<% end %>
-
 
 <%= render 'list' %>
 
 <%= paginate @articles, :window => 2 %>
+

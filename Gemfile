@@ -49,4 +49,7 @@ group :test do
   gem 'turn', '0.8.2', :require => false
   gem 'database_cleaner'
   gem 'shoulda-matchers'
+
+  gem 'cucumber-rails'
+  gem 'capybara'
 end

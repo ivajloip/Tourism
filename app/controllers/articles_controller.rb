@@ -8,11 +8,7 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    query = synthesize_query
-    
-    @articles = Article.where(query).order_by(:created_at, :desc).page(params[:page]).per(@page_size)
-    @authors = User.all
-    @article = Article.new
+    @articles = Article.order_by(:created_at, :desc).page(params[:page]).per(@page_size)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -96,48 +92,24 @@ class ArticlesController < ApplicationController
   # POST /articles/1/like
   # POST /articles/1/likes.json
   def like
-    @article = Article.find(params[:id])
-
-    @article.like(current_user)
-
-    @article.save
-
-    respond_to do |format|
-      format.html { redirect_to @article, notice: 'Article was successfully liked.' }
-      format.json { head :ok }
-      format.js { render '/articles/votes' }
+    add_opinion('Article was successfully liked.', 'There was an error liking this article.') do |article|
+      article.like(current_user)
     end
   end
 
   # POST /articles/1/dislike
   # POST /articles/1/dislikes.json
   def dislike
-    @article = Article.find(params[:id])
-
-    @article.dislike(current_user)
-
-    @article.save
-
-    respond_to do |format|
-      format.html { redirect_to @article, notice: 'Article was successfully disliked.' }
-      format.json { head :ok }
-      format.js { render '/articles/votes' }
+    add_opinion('Article was successfully disliked.', 'There was an error disliking this article.') do |article|
+      article.dislike(current_user)
     end
   end
 
   # POST /articles/1/follow
   # POST /articles/1/follow.json
   def follow
-    @article = Article.find(params[:id])
-
-    @article.follow(current_user)
-
-    @article.save
-
-    respond_to do |format|
-      format.html { redirect_to @article, notice: 'Article was successfully followed.' }
-      format.json { head :ok }
-      format.js { render '/articles/votes' }
+    add_opinion('Article was successfully followed.', 'There was an error following this article.') do |article|
+      article.follow(current_user)
     end
   end
 
@@ -145,24 +117,46 @@ class ArticlesController < ApplicationController
   # POST /articles/1/unfollow
   # POST /articles/1/unfollow.json
   def unfollow
-    @article = Article.find(params[:id])
-
-    @article.unfollow(current_user)
-
-    @article.save
-
-    respond_to do |format|
-      format.html { redirect_to @article, notice: 'Article was successfully unfollowed.' }
-      format.json { head :ok }
-      format.js { render '/articles/votes' }
+    add_opinion('Article was successfully unfollowed.', 'There was an error unfollowing this article.') do |article|
+      article.unfollow(current_user)
     end
   end
 
-  def find
-    
+  def search
+    query = synthesize_query
+
+    logger.debug("------#{query}------")
+
+    @authors = User.all
+    @article = Article.new
+    @articles = Article.where(query).order_by(:created_at, :desc).page(params[:page]).per(@page_size)
+
+    respond_to do |format|
+      format.html # search.html.erb
+      format.json { render json: @articles }
+    end
   end
 
 private
+  def add_opinion success_message, failure_message
+    @article = Article.find(params[:id])
+
+    yield @article
+
+    if @article.save
+      respond_to do |format|
+        format.html { redirect_to @article, notice: success_message }
+        format.json { head :ok }
+        format.js { render '/articles/votes' }
+      end
+    else 
+      respond_to do |format|
+        format.html { redirect_to @article, notice: failure_message }
+        format.json { render json: comment.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def synthesize_query
     unless params[:query] 
       return nil

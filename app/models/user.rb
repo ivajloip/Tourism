@@ -17,7 +17,7 @@ class User
   references_and_referenced_in_many :likes_comments, :class_name => 'User', :inverse_of => :liking
   references_and_referenced_in_many :dislikes_comments, :class_name => 'User', :inverse_of => :disliking
 
-  attr_accessible :display_name, :email, :avatar
+  attr_accessible :display_name, :email, :avatar, :password
 
   has_mongoid_attached_file :avatar, 
     :default_url => '/system/:attachment/no_avatar.png',

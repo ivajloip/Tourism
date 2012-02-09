@@ -23,4 +23,21 @@ module ArticlesHelper
       button_to t("button.unfollow"), { :action => "unfollow" }, :method => :put, :remote => true
     end
   end
+
+  def link_to_edit article
+    if article.editable_by?(current_user)
+      link_to t('edit', :default => 'Edit'), edit_article_path(article)
+    else 
+      ''
+    end
+  end
+
+  def link_to_delete article
+    if article.editable_by?(current_user)
+      confirmation = t 'confirm', :default => 'Are you sure?'
+      link_to t('destroy', :default => 'Destroy'), article, confirm: confirmation, method: :delete
+    else 
+      ''
+    end
+  end
 end
