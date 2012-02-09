@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
       logger.debug "Redirected #{current_user} who was tring to edit #{entity}"
 
       flash[:error] = I18n.t 'unsufficient_privileges', :default => 'You don\'t have the persmissions required to edit this document'
-      redirect_to :action => 'show'
+      redirect_to article_path(entity)
     end
   end
 end

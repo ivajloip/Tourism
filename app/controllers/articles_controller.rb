@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
 
-  before_filter :only => [:edit, :updated, :destroy] do
+  before_filter :only => [:edit, :update, :destroy] do
     verify_edit_permissions Article.find(params[:id])
   end
 
@@ -9,8 +9,6 @@ class ArticlesController < ApplicationController
   # GET /articles.json
   def index
     query = synthesize_query
-    
-    logger.debug("-----------#{query}----------")
     
     @articles = Article.where(query).order_by(:created_at, :desc).page(params[:page]).per(@page_size)
     @authors = User.all
