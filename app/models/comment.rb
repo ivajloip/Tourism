@@ -14,12 +14,6 @@ class Comment
 
   validates_presence_of :content
 
-  def initialize *args
-    @liking = []
-    @disliking = []
-    super
-  end
-
   def editable_by?(user)
     self.author == user or user.try(:admin?)
   end

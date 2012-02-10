@@ -9,9 +9,12 @@ Tourism::Application.routes.draw do
     get "/logout" => "devise/sessions#destroy"
   end
 
-  resources :users
-
-  resources :provinces
+  resources :users do
+    member do
+      put 'follow'
+      put 'unfollow'
+    end
+  end
 
   resources :articles do 
     resources :comments do
@@ -24,6 +27,10 @@ Tourism::Application.routes.draw do
       put 'dislike'
       put 'follow'
       put 'unfollow'
+    end
+
+    collection do
+      get 'search'
     end
   end
 

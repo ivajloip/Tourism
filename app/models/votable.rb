@@ -3,7 +3,7 @@ module Votable
     disliking_ids.delete(user._id)
 
     unless liking_ids.include? user._id
-      liking_ids << user._id
+      liking << user
     end
   end
 
@@ -11,7 +11,7 @@ module Votable
     liking_ids.delete(user._id)
 
     unless disliking_ids.include? user._id
-      disliking_ids << user._id
+      disliking << user
     end
   end
 

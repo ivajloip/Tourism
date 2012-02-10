@@ -10,7 +10,8 @@
 
 <%
   unless page.current?
-    url = pagination_url url, page
+    keep_url ||= false
+    url = pagination_url url, page, keep_url
   end
 %>
 

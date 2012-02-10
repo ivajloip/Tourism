@@ -1,7 +1,6 @@
 <h2><%= t('edit_user') %></h2>
 
 <%= form_for(@user, :url => user_path, :html => { :multipart => true } ) do |f| %>
-
   <div><%= f.label :display_name %><br />
   <%= f.text_field :display_name %></div>
 

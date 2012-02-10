@@ -34,7 +34,19 @@ module ApplicationHelper
     "$('##{id}').html('#{escape_javascript(content)}');".html_safe
   end
 
-  def pagination_url url, page
-    url.split('?')[0] + '?page=' + page.to_s
+  def pagination_url url, page, keep_url = false
+    if keep_url
+      url
+    else
+      url.split('?')[0] + '?page=' + page.to_s
+    end
+  end
+
+  def follow_buttons entity
+    if user_signed_in? and not entity.following.include?(current_user)
+      button_to t("button.follow"), { :action => "follow" }, :method => :put, :remote => true
+    else
+      button_to t("button.unfollow"), { :action => "unfollow" }, :method => :put, :remote => true
+    end
   end
 end

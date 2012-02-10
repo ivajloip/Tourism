@@ -22,5 +22,13 @@ class Notifier < ActionMailer::Base
          :subject => "#{@article_title} #{I18n.t(:article_edited, :defaut => 'was modified')}"
   end
 
-#  Hr1si1Iv0:*
+  def article_added(article)
+    @article_title = article.title
+    @commenter_name = article.author_name
+    @article_body = article.content
+    @article_url = article_url(article)
+
+    mail :to => article.followers_emails,
+         :subject => "#{@article_title} #{I18n.t(:article_added, :defaut => 'was created')}"
+  end
 end

@@ -19,6 +19,14 @@
   <%= @user.articles.count %>
 </p>
 
+<p id="votes">
+  <%= votes @user %>
+</p>
 
-<%= link_to t('Edit'), edit_user_path(@user) %> |
-<%= link_to t('back'), users_path %>
+<span id="follow_buttons">
+  <%= follow_buttons @user %>
+</span>
+
+<% if @user.editable_by?(current_user) %>
+  <%= link_to t('Edit'), edit_user_path(@user) %>
+<% end %>

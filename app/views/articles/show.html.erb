@@ -9,7 +9,7 @@
 
 <p>
   <b>Content:</b>
-  <%= @article.content %>
+  <pre><%= content @article %></pre>
 </p>
 
 <p>
@@ -34,7 +34,7 @@
 <%= button_to t("button.dislike"), { :action => "dislike" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
 
 <span id="follow_buttons">
-  <%= follow_buttons %>
+  <%= follow_buttons @article %>
 </span>
 
 <% if can_edit @article %>

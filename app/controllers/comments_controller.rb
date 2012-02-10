@@ -17,7 +17,10 @@ class CommentsController < ApplicationController
         format.js { render '/articles/comments' }
       end
 
-      Notifier.new_comment(@comment).deliver
+      to = @comment.article.followers_emails
+      unless to.blank?
+        Notifier.new_comment(@comment).deliver
+      end
     else
       respond_to do |format|
         format.html { redirect_to @article }
@@ -30,7 +33,7 @@ class CommentsController < ApplicationController
   # POST /articles/1/comments/1/like
   # POST /articles/1/comments/1/likes.json
   def like
-    vote('Comment was successfully liked.', 'There was an error liking this comment.') do |comment|
+    add_opinion('Comment was successfully liked.', 'There was an error liking this comment.') do |comment|
       comment.like(current_user)
     end
   end
@@ -39,12 +42,22 @@ class CommentsController < ApplicationController
   # POST /articles/1/comments/1/dislike
   # POST /articles/1/comments/1/dislikes.json
   def dislike
-    vote('Comment was successfully disliked.', 'There was an error disliking this comment.') do |comment|
+    add_opinion('Comment was successfully disliked.', 'There was an error disliking this comment.') do |comment|
       comment.dislike(current_user)
     end
   end
 
   private
+
+  def add_opinion success_message, failure_message
+    super(success_message, failure_message) do 
+      @article = find_article
+      @comment = @article.comments.find(params[:comment_id])
+      yield @comment
+
+      [@comment, @article]
+    end
+  end
 
   def vote success_message, failure_message
     @article = find_article

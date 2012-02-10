@@ -343,14 +343,14 @@ describe ArticlesController do
       article.stub save: true
       xhr :post, :like, id: article_id
 
-      controller.should render_template('/articles/votes') 
+      controller.should render_template('votes') 
     end
 
     it "does nothing on ajax failure" do
       article.stub save: false
       xhr :post, :like, id: article_id
 
-      controller.should_not render_template('/articles/votes') 
+      controller.should_not render_template('votes') 
     end
 
     it "dislikes the article on behalf of the user" do

@@ -16,14 +16,6 @@ module ArticlesHelper
     result.join(', ')
   end
 
-  def follow_buttons
-    if user_signed_in? and not @article.following.include?(current_user)
-      button_to t("button.follow"), { :action => "follow" }, :method => :put, :remote => true
-    else
-      button_to t("button.unfollow"), { :action => "unfollow" }, :method => :put, :remote => true
-    end
-  end
-
   def link_to_edit article
     if article.editable_by?(current_user)
       link_to t('edit', :default => 'Edit'), edit_article_path(article)
@@ -39,5 +31,17 @@ module ArticlesHelper
     else 
       ''
     end
+  end
+
+  def content article
+    escaped = ERB::Util.html_escape(article.content)
+
+    parse_images(escaped).html_safe
+  end
+
+private  
+  def parse_images(text)
+    logger.debug("Parsing ----#{text}----")
+    text.gsub(/\[([^\]\n\r]+?)\]\(([^\)\s]+?)\)/, '<img src="\2" alt="\1" />')
   end
 end

@@ -50,11 +50,18 @@ class ArticlesController < ApplicationController
     @article = Article.new(params[:article])
     @article.author = current_user
 
-    respond_to do |format|
-      if @article.save
+    if @article.save
+      respond_to do |format|
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
         format.json { render json: @article, status: :created, location: @article }
-      else
+      end
+
+      to = current_user.followers_emails
+      unless to.blank?
+        Notifier.article_added(@article).deliver
+      end
+    else
+      respond_to do |format|
         format.html { render action: "new" }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
@@ -139,21 +146,11 @@ class ArticlesController < ApplicationController
 
 private
   def add_opinion success_message, failure_message
-    @article = Article.find(params[:id])
+    super(success_message, failure_message) do 
+      @article = Article.find(params[:id])
+      yield @article
 
-    yield @article
-
-    if @article.save
-      respond_to do |format|
-        format.html { redirect_to @article, notice: success_message }
-        format.json { head :ok }
-        format.js { render '/articles/votes' }
-      end
-    else 
-      respond_to do |format|
-        format.html { redirect_to @article, notice: failure_message }
-        format.json { render json: comment.errors, status: :unprocessable_entity }
-      end
+      [@article, @article]
     end
   end
 
@@ -174,6 +171,8 @@ private
 
     result[:tag_ids.all] = params[form_param]['tag_ids']
 
+    result[:title] = Regexp.new(params[form_param]['title'])
+
     result.merge(synthesize_mandatory_fields_query).select { |key, value| not value.blank? }
   end
 
@@ -193,11 +192,10 @@ private
   end
 
   def synthesize_mandatory_fields_query
-    exceptions = ['tag_ids']
+    exceptions = ['tag_ids', 'title']
     fields = Article.accessible_attributes.to_a - exceptions
     fields += fields.map { |field| field + '_id' } + fields.map { |field| field + '_ids' }
 
-    # TODO: Make this the other way around -> from fields take some
     params[:article].select { |key, value| fields.include?(key) }
   end
 end

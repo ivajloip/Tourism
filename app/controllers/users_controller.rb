@@ -1,4 +1,10 @@
 class UsersController < ApplicationController
+  before_filter :authenticate_user!, :except => [:index, :show]
+
+  before_filter :only => [:edit, :update, :destroy] do
+    verify_edit_permissions User.find(params[:id])
+  end
+
   # GET /users
   # GET /users.json
   def index
@@ -43,6 +49,8 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.user = current_user
 
+    @user[:password] = params[:user][:password]
+
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -59,8 +67,8 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
-    unless params[:password].blank?
-      @user.password = params[:password]
+    if params[:user][:password].blank?
+      params[:user][:password_confirmation] = params[:user][:password] = nil
     end
 
     respond_to do |format|
@@ -83,6 +91,33 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to users_url }
       format.json { head :ok }
+    end
+  end
+
+  # POST /users/1/follow
+  # POST /users/1/follow.json
+  def follow
+    add_opinion('User was successfully followed.', 'There was an error following this user.') do |user|
+      user.follow(current_user)
+    end
+  end
+
+
+  # POST /articles/1/unfollow
+  # POST /articles/1/unfollow.json
+  def unfollow
+    add_opinion('User was successfully unfollowed.', 'There was an error unfollowing this user.') do |user|
+      user.unfollow(current_user)
+    end
+  end
+
+private  
+  def add_opinion success_message, failure_message
+    super(success_message, failure_message) do 
+      @user = User.find(params[:id])
+      yield @user
+
+      [@user, @user]
     end
   end
 end

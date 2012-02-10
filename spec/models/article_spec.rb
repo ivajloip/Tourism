@@ -27,11 +27,20 @@ describe Article do
     end
   end
 
-  describe "(commenting)" do
-    pending "Add tests for commenting on article"
-  end
+  describe "(voting)" do
+    let(:article) { build :article }
+    let(:reader) { build :user }
+    
+    it "Should get liked votes correct" do
+      article.like(reader)
+      article.liking_count.should eq 1
+    end
 
-# Voting is tested in comments, I think I can skip it now
+    it "Should get disliked votes correct" do
+      article.dislike(reader)
+      article.disliking_count.should eq 1
+    end
+  end
 
   describe "(following)" do
     let(:article) { build :article }
@@ -58,15 +67,17 @@ describe Article do
     end
   end
 
-  describe "(notifying followers)" do
+  describe "(followers emails)" do
     let(:article) { build :article }
+  
+    it "gets users emails" do 
+      article.followers_emails.should =~ []
+      user1 = build :user
+      user2 = build :user
+      article.follow(user1)
+      article.follow(user2)
 
-    it "Notify followers on edit" do
-      pending "Add tests for article followers notifications on article edit"
-    end
-
-    it "Notify followers on comment" do
-      pending "Add tests for article followers notifications on article comment"
+      article.followers_emails.should =~ [user1.email, user2.email]
     end
   end
 end

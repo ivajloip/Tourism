@@ -171,13 +171,13 @@ describe CommentsController do
       comment.stub save: true
       xhr :post, :like, article_id: article_id, comment_id: comment_id
 
-      controller.should render_template('/articles/comment_votes') 
+      controller.should render_template('votes') 
     end
 
     it "does nothing on ajax failure" do
       xhr :post, :like, article_id: article_id, comment_id: comment_id
 
-      controller.should_not render_template('/articles/comment_votes') 
+      controller.should_not render_template('votes') 
     end
   end
 end
