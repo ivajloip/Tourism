@@ -55,3 +55,6 @@ en:
     edited: "%{editor} edited article %{article_title} that you follow.\n You can see the change at %{article_url}.\nIt's unformatted content is: %{article_body}"
     added: "%{editor} that you follow created article %{article_title}.\n You can see the it at %{article_url}.\nIt's unformatted content is: %{article_body}"
 
+  recaptcha:
+    errors:
+      verification_failed: "You didn't pass the human test, please try again"

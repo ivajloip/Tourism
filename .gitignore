@@ -10,6 +10,9 @@
 # Ignore mailer configuration
 /config/mail_settings
 
+# Ignore captcha settings
+/config/initializers/recaptcha.rb
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
