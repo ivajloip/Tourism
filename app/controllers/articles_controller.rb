@@ -59,7 +59,7 @@ class ArticlesController < ApplicationController
 
       to = current_user.followers_emails
       unless to.blank?
-        Notifier.article_added(@article).deliver
+        Notifier.article_added(current_user, @article).deliver
       end
     else
       respond_to do |format|

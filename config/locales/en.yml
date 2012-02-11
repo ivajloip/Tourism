@@ -72,12 +72,21 @@ en:
     follow: 'Follow'
     unfollow: 'Unfollow'
 
-  new_comment_body: "%{commenter} added comment to article %{article_title} that you follow.\n You can read the comment at %{article_url}.\nIt's unformatted content is: %{comment_body}"
-  new_comment_on: "There is new comment on"
+  comment:
+    added:
+      notice: "%{commenter} added comment to article %{article_title} that you follow ."
+      subject: "There is new comment on %{article_title}"
 
   article:
-    edited: "%{editor} edited article %{article_title} that you follow.\n You can see the change at %{article_url}.\nIt's unformatted content is: %{article_body}"
-    added: "%{editor} that you follow created article %{article_title}.\n You can see the it at %{article_url}.\nIt's unformatted content is: %{article_body}"
+    content:
+      unformatted: "It's unformatted content is: %{body}."
+    edited:
+      subject: "%{article_title} was modified"
+      notice: "%{editor} edited article %{article_title} that you follow." 
+    link: "You can see the it at %{article_url}."
+    added: 
+      subject: "%{article_title} was created"
+      notice: "%{author_name} that you follow created article %{article_title}."
 
   recaptcha:
     errors:
