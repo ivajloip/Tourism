@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Comment do
   it { should_not allow_mass_assignment_of(:author_id) }
   it { should_not allow_mass_assignment_of(:article_id) }
+  it { should_not allow_mass_assignment_of(:created_at) }
 
   it { should validate_presence_of(:content) }
 

@@ -4,9 +4,28 @@
 en:
   articles: 
     name: "Articles"
+    new: "New Article"
     list: "Listing Articles"
     search: "Search for articles"
+    edit: "Editing Article"
+    unfollow:
+      success: 'Article was successfully unfollowed.'
+      fail: 'There was an error unfollowing this article.'
+    follow:
+      success: 'Article was successfully followed.'
+      fail: 'There was an error following this article.'
+    dislike:
+      success: 'Article was successfully disliked.'
+      fail: 'There was an error disliking this article.'
+    like:
+      success: 'Article was successfully liked.'
+      fail: 'There was an error liking this article.'
+
   greet_username: "%{message}, %{user}!"
+
+  users: 
+    list: 'Users'
+    logout: 'Sign out'
 
   sign_up: 'Sign up'
 
@@ -36,7 +55,8 @@ en:
   tags:
     mountain_bike_riding: "Mountain bike riding"
     river_fishing: "River Fishing"
-    title: 'Tags'
+    list: 'Tags'
+    new: 'New Tag'
 
   province:
     sofia: 'Sofia'

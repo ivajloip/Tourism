@@ -1,18 +1,18 @@
 require 'spec_helper'
 
-describe Province do
+describe Tag do
   it { should validate_presence_of(:key) }
 
   describe "(name)" do
     it "can provide name" do
-      province = build :province
-      province.name.should eq 'Province'
+      province = build :tag
+      province.name.should eq 'Tag'
     end
 
 # TODO: fix this to something less specific
     it "name is localized" do
-      province = build(:province, :key => 'sofia')
-      province.name.should eq I18n.t('province.sofia')
+      province = build(:tag, :key => 'river_fishing')
+      province.name.should eq I18n.t('tags.river_fishing')
     end
   end
 

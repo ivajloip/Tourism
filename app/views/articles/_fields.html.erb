@@ -4,11 +4,11 @@
 </div>
 <div class="field">
 <%= f.label :province_id %><br />
-<%= f.collection_select :province_id, Province.all, :id, :name %>
+<%= f.collection_select :province_id, Province.all_visible(current_user), :id, :name, { :include_blank => true } %>
 </div>
 <div class="field">
 <%= f.label :tag_ids %><br />
-<%= f.collection_select :tag_ids, Tag.all, :id, :name, {}, :multiple => true, :size => 6 %>
+<%= f.collection_select :tag_ids, Tag.all_visible(current_user), :id, :name, {}, :multiple => true, :size => 6 %>
 </div>
 
 <% if fields_to_render.include? :content %>
@@ -18,9 +18,14 @@
   </div>
 <% end %>
 
+<div class="field">
+  <%= f.label :active %><br />
+  <%= f.check_box :active %>
+</div>
+
 <% if fields_to_render.include? :author %>
   <%= f.label :author_id %><br />
-  <%= f.collection_select :author_id, @authors, :id, :display_name %>
+  <%= f.collection_select(:author_id, @authors, :id, :display_name, { :include_blank => true })%>
 <% end %>
 
 <% if fields_to_render.include? :start_date %>

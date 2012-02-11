@@ -2,6 +2,7 @@ class Comment
   include Mongoid::Document
   include Mongoid::Timestamps
   include Votable
+  include Hidable
 
   field :content, :type => String
   embedded_in :article, :inverse_of => :comments

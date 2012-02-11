@@ -1,7 +1,9 @@
 class User
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Mongoid::Paperclip
   include Followable
+  include Hidable
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable

@@ -1,5 +1,7 @@
 class Province
   include Mongoid::Document
+  include Hidable
+
   field :key, :type => String
 
   references_many :articles, :inverse_of => :province

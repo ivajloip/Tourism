@@ -3,17 +3,20 @@ require 'spec_helper'
 describe ArticlesController do
   describe "GET index" do
     before do 
-      Article.stub_chain :order_by, :page, :per => 'articles'
+      Article.stub_chain :all_visible, :order_by, :page, :per => 'articles'
     end
 
     it "paginates all articles to @articles" do
-      Article.order_by.page.should_receive(:per)
+      Article.should_receive(:all_visible).with(nil)
+
+      Article.all_visible.order_by.page.should_receive(:per)
+
       get :index, :page => '1'
       assigns(:articles).should == 'articles'
     end
 
     it "search the correct page for pagination" do
-      Article.order_by.should_receive(:page).with('3')
+      Article.all_visible.order_by.should_receive(:page).with('3')
       get :index, :page => '3'
     end
   end
@@ -417,6 +420,93 @@ describe ArticlesController do
       post :unfollow, id: article_id
       controller.should redirect_to(article_url(article)) and 
         response.request.flash[:notice].should eq "There was an error unfollowing this article."
+    end
+  end
+
+  describe "GET search" do
+    let(:current_user) { create(:user) }
+
+    before do
+      Article.stub_chain :all_visible, :where, :order_by, :page, :per => 'articles'
+
+      sign_in current_user
+    end
+
+    def search_articles(article_param = {}, query_param = {}, page = 1)
+      get :search, :page => page, :query => query_param, :article => article_param
+    end
+
+    it "does not require authentication" do
+      sign_out current_user
+
+      search_articles
+      response.should_not redirect_to(new_user_session_url)
+    end
+
+    it "assigns the articles to @articles" do
+      Article.should_receive(:all_visible).with(current_user)
+      Article.all_visible.where.order_by.page.should_receive(:per)
+      search_articles
+      assigns(:articles).should == 'articles'
+    end
+
+    it "synthesize correct start_date query" do
+      day, month, year = Time.now.to_a[3..5]
+      expected_query = { :created_at => { "$gte" => Time.new(year, month, day) } }
+      query_param = { 'start_date(1i)' => year, 'start_date(2i)' => month, 'start_date(3i)' => day }
+
+      Article.all_visible.should_receive(:where).with(expected_query)
+
+      search_articles({}, query_param)
+    end
+
+    it "synthesize correct author_id query" do
+      article_param = { :author_id => 'author_id' }
+
+      Article.all_visible.should_receive(:where).with(article_param)
+
+      search_articles(article_param)
+    end
+    
+    it "synthesize correct title query" do
+      article_param = { :title => 'title' }
+      expected_query = { :title => /title/ }
+
+      Article.all_visible.should_receive(:where).with(expected_query)
+
+      search_articles(article_param)
+    end
+
+    it "synthesize correct province_id query" do
+      article_param = { 'province_id' => 'province_id' }
+
+      Article.all_visible.should_receive(:where).with(article_param)
+
+      search_articles(article_param)
+    end
+
+    it "search the correct page for pagination" do
+      Article.all_visible.where.order_by.should_receive(:page).with('3')
+      search_articles({}, {}, 3)
+    end
+
+    it "synthesize correctly multiple params" do
+      article_param = { :title => 'title', :author_id => 'author_id', 'province_id' => 'province_id' }
+
+      day, month, year = Time.now.to_a[3..5]
+
+      query_param = { 'start_date(1i)' => year, 'start_date(2i)' => month, 'start_date(3i)' => day, 
+                      'end_date(1i)' => year, 'end_date(2i)' => month, 'end_date(3i)' => (day + 1) }
+
+      expected_dates_query = { "$gte" => Time.new(year, month, day), 
+                               "$lt" => Time.new(year, month, day + 1) }
+
+      expected_query = { :created_at => expected_dates_query, :title => /title/, 
+                         'province_id' => 'province_id', :author_id => 'author_id' }
+
+      Article.all_visible.should_receive(:where).with(expected_query)
+
+      search_articles(article_param, query_param)
     end
   end
 end

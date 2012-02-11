@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Article do
   it { should_not allow_mass_assignment_of(:author_id) }
+  it { should_not allow_mass_assignment_of(:created_at) }
 
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:content) }
@@ -22,7 +23,7 @@ describe Article do
       article.should_not be_editable_by build(:user)
     end
 
-    it "Get correct author name" do
+    it "get correct author name" do
       article.author_name.should eq article.author.display_name
     end
   end
@@ -31,12 +32,12 @@ describe Article do
     let(:article) { build :article }
     let(:reader) { build :user }
     
-    it "Should get liked votes correct" do
+    it "should get liked votes correct" do
       article.like(reader)
       article.liking_count.should eq 1
     end
 
-    it "Should get disliked votes correct" do
+    it "should get disliked votes correct" do
       article.dislike(reader)
       article.disliking_count.should eq 1
     end
@@ -46,18 +47,18 @@ describe Article do
     let(:article) { build :article }
     let(:follower) { build :user }
 
-    it "Should be able to follow" do
+    it "should be able to follow" do
       article.follow(follower)
       article.following_ids.should be_include follower._id
     end
 
-    it "Should be able to unfollow" do
+    it "should be able to unfollow" do
       article.follow(follower)
       article.unfollow(follower)
       article.following_ids.should_not be_include follower._id
     end
 
-    it "Should get following count correctly" do
+    it "should get following count correctly" do
       article.follow(follower)
       article.follow(build(:user))
       article.following_count.should eq 2
@@ -78,6 +79,28 @@ describe Article do
       article.follow(user2)
 
       article.followers_emails.should =~ [user1.email, user2.email]
+    end
+  end
+
+  describe "(activate/deactivate)" do
+    it "should be constructed active by default" do
+      article = build :article
+
+      article.should be_active
+    end
+
+    it "should be able to deactivate it" do
+      article = build :article, :active => true
+      article.deactivate
+
+      article.should_not be_active
+    end
+
+    it "should be able to activate it" do
+      article = build :article, :active => false
+      article.activate
+
+      article.should be_active
     end
   end
 end

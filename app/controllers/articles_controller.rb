@@ -1,14 +1,15 @@
 class ArticlesController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :authenticate_user!, :except => [:index, :show, :search]
 
   before_filter :only => [:edit, :update, :destroy] do
-    verify_edit_permissions Article.find(params[:id])
+    verify_edit_permissions find_article
   end
 
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.order_by(:created_at, :desc).page(params[:page]).per(@page_size)
+    visible_articles = Article.all_visible(current_user)
+    @articles = visible_articles.order_by(:created_at, :desc).page(params[:page]).per(@page_size)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -19,7 +20,7 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
-    @article = Article.find(params[:id])
+    @article = find_article
     @comments = @article.comments.order_by(:name, :asc).page(params[:page]).per(@page_size)
 
     respond_to do |format|
@@ -41,7 +42,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1/edit
   def edit
-    @article = Article.find(params[:id])
+    @article = find_article
   end
 
   # POST /articles
@@ -71,7 +72,7 @@ class ArticlesController < ApplicationController
   # PUT /articles/1
   # PUT /articles/1.json
   def update
-    @article = Article.find(params[:id])
+    @article = find_article
 
     respond_to do |format|
       if @article.update_attributes(params[:article])
@@ -87,7 +88,7 @@ class ArticlesController < ApplicationController
   # DELETE /articles/1
   # DELETE /articles/1.json
   def destroy
-    @article = Article.find(params[:id])
+    @article = find_article
     @article.destroy
 
     respond_to do |format|
@@ -99,7 +100,7 @@ class ArticlesController < ApplicationController
   # POST /articles/1/like
   # POST /articles/1/likes.json
   def like
-    add_opinion('Article was successfully liked.', 'There was an error liking this article.') do |article|
+    add_opinion(t('articles.like.success'), t('articles.like.fail')) do |article|
       article.like(current_user)
     end
   end
@@ -107,7 +108,7 @@ class ArticlesController < ApplicationController
   # POST /articles/1/dislike
   # POST /articles/1/dislikes.json
   def dislike
-    add_opinion('Article was successfully disliked.', 'There was an error disliking this article.') do |article|
+    add_opinion(t('articles.dislike.success'), t('articles.dislike.fail')) do |article|
       article.dislike(current_user)
     end
   end
@@ -115,7 +116,7 @@ class ArticlesController < ApplicationController
   # POST /articles/1/follow
   # POST /articles/1/follow.json
   def follow
-    add_opinion('Article was successfully followed.', 'There was an error following this article.') do |article|
+    add_opinion(t('articles.follow.success'), t('articles.follow.fail')) do |article|
       article.follow(current_user)
     end
   end
@@ -124,7 +125,7 @@ class ArticlesController < ApplicationController
   # POST /articles/1/unfollow
   # POST /articles/1/unfollow.json
   def unfollow
-    add_opinion('Article was successfully unfollowed.', 'There was an error unfollowing this article.') do |article|
+    add_opinion(t('articles.unfollow.success'), t('articles.unfollow.fail')) do |article|
       article.unfollow(current_user)
     end
   end
@@ -134,9 +135,10 @@ class ArticlesController < ApplicationController
 
     logger.debug("------#{query}------")
 
-    @authors = User.all
+    visible_articles = Article.all_visible(current_user)
+    @articles = visible_articles.where(query).order_by(:created_at, :desc).page(params[:page]).per(@page_size)
     @article = Article.new
-    @articles = Article.where(query).order_by(:created_at, :desc).page(params[:page]).per(@page_size)
+    @authors = User.all_visible(current_user)
 
     respond_to do |format|
       format.html # search.html.erb
@@ -145,9 +147,13 @@ class ArticlesController < ApplicationController
   end
 
 private
+  def find_article
+    Article.find(params[:id])
+  end
+
   def add_opinion success_message, failure_message
     super(success_message, failure_message) do 
-      @article = Article.find(params[:id])
+      @article = find_article
       yield @article
 
       [@article, @article]
@@ -161,8 +167,6 @@ private
 
     result = {}
 
-    logger.debug("-----------#{params}---------")
-
     form_param = :article
 
     result[:created_at] = created_at_limits
@@ -171,9 +175,11 @@ private
 
     result[:tag_ids.all] = params[form_param]['tag_ids']
 
-    result[:title] = Regexp.new(params[form_param]['title'])
+    unless params[form_param]['title'].blank?
+      result[:title] = Regexp.new(params[form_param]['title'])
+    end
 
-    result.merge(synthesize_mandatory_fields_query).select { |key, value| not value.blank? }
+    result.merge(synthesize_mandatory_fields_query).reject { |key, value| value.blank? }
   end
 
   def created_at_limits
@@ -193,8 +199,7 @@ private
 
   def synthesize_mandatory_fields_query
     exceptions = ['tag_ids', 'title']
-    fields = Article.accessible_attributes.to_a - exceptions
-    fields += fields.map { |field| field + '_id' } + fields.map { |field| field + '_ids' }
+    fields = Article.attr_accessible[:default] - exceptions
 
     params[:article].select { |key, value| fields.include?(key) }
   end

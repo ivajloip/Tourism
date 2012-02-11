@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe User do
   it { should_not allow_mass_assignment_of(:admin) }
+  it { should_not allow_mass_assignment_of(:created_at) }
 
   it { should validate_presence_of(:display_name) }
   it { should validate_presence_of(:password) }
@@ -37,6 +38,28 @@ describe User do
       article.follow(follower2)
 
       article.followers_emails.should =~ [follower.email, follower2.email]
+    end
+  end
+
+  describe "(activate/deactivate)" do
+    it "should be constructed active by default" do
+      article = build :article
+
+      article.should be_active
+    end
+
+    it "should be able to deactivate it" do
+      article = build :article, :active => true
+      article.deactivate
+
+      article.should_not be_active
+    end
+
+    it "should be able to activate it" do
+      article = build :article, :active => false
+      article.activate
+
+      article.should be_active
     end
   end
 end

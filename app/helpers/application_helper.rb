@@ -1,13 +1,15 @@
 module ApplicationHelper
   def menu_links 
-    links = { 'home' => '/', 'articles.name' => articles_path }
+    links = { 'home' => '/', 'articles.name' => articles_path, 
+              'articles.search' => search_articles_path }
 
     if user_signed_in? 
-      links = links.merge({ 'article.new' => new_article_path, 'user.profile' => edit_user_path(current_user) })
-
       if current_user.admin?
-        links = links.merge({ 'users.title' => users_path })
+        links = links.merge({ 'tags.list' => tags_path, 'provinces.list' => provinces_path })
       end
+
+      links = links.merge({ 'articles.new' => new_article_path, 'user.profile' => edit_user_path(current_user),
+                            'users.list' => users_path, 'users.logout' => logout_path })
     else
       links = links.merge({ 'user.sign_in' => new_user_session_path, 'sign_up' => new_user_registration_path })
     end
