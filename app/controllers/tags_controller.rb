@@ -1,12 +1,12 @@
 class TagsController < ApplicationController
   before_filter :authenticate_user!
 
-  before_filter :is_admin, :except => [:index, :show]
+  before_filter :is_admin
 
   # GET /tags
   # GET /tags.json
   def index
-    @tags = Tag.all
+    @tags = Tag.all.page(params[:page]).per(@page_size)
 
     respond_to do |format|
       format.html # index.html.erb

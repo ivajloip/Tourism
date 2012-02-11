@@ -1,12 +1,12 @@
 class ProvincesController < ApplicationController
   before_filter :authenticate_user!
 
-  before_filter :is_admin, :except => [:index, :show]
+  before_filter :is_admin
   
   # GET /provinces
   # GET /provinces.json
   def index
-    @provinces = Province.all
+    @provinces = Province.all.page(params[:page]).per(@page_size)
 
     respond_to do |format|
       format.html # index.html.erb

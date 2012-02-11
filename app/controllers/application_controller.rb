@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
       true
     else
       flash[:error] = I18n.t 'unsufficient_privileges'
-      redirect_to :action => 'index'
+      redirect_to '/'
 
       false
     end

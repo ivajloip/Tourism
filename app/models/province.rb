@@ -8,9 +8,9 @@ class Province
 
   validates_presence_of :key
 
-  attr_accessible :key
+  attr_accessible :key, :active
 
   def name
-    I18n.t('province.' + key, :default => key.capitalize)
+    I18n.t('provinces.' + key, :default => key.capitalize)
   end
 end

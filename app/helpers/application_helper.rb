@@ -17,14 +17,6 @@ module ApplicationHelper
     links
   end
 
-  def is_admin
-    user_signed_in? and current_user.admin
-  end
-
-  def can_edit entity
-    user_signed_in? and (entity.author == current_user or current_user.admin)
-  end
-
   def rerender_partial id, partial
     rerender id do
       render partial

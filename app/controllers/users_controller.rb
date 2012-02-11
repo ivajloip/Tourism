@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.all.page(params[:page]).per(@page_size)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,39 +27,9 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/new
-  # GET /users/new.json
-  def new
-    @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @user }
-    end
-  end
-
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(params[:user])
-    @user.user = current_user
-
-    @user[:password] = params[:user][:password]
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render json: @user, status: :created, location: @user }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PUT /users/1
@@ -67,8 +37,9 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
-    if params[:user][:password].blank?
-      params[:user][:password_confirmation] = params[:user][:password] = nil
+    if params[:user].try(:[], :password).blank?
+      params[:user].try(:delete, :password_confirmation)
+      params[:user].try(:delete, :password)
     end
 
     respond_to do |format|

@@ -3,17 +3,17 @@
 <%= render '/shared/error' %>
 
 <p>
-  <b><%= t 'title' %>:</b>
+  <b><%= t 'articles.title' %>:</b>
   <%= @article.title %>
 </p>
 
 <p>
-  <b>Content:</b>
+  <b><%= t 'articles.content' %></b>
   <pre><%= content @article %></pre>
 </p>
 
 <p>
-  <b><%= t 'province.title' %>:</b>
+  <b><%= t 'provinces.title' %>:</b>
   <%= @article.province.name %>
 </p>
 
@@ -37,11 +37,7 @@
   <%= follow_buttons @article %>
 </span>
 
-<% if can_edit @article %>
-  <%= link_to t('edit'), edit_article_path(@article) %> |
-<% end %>
-
-<%= link_to t('back'), articles_path %>
+<%= link_to_edit @article %>
 
 <% if user_signed_in? %>
 <section>

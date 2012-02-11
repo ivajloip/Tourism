@@ -8,7 +8,7 @@ class Tag
 
   validates_presence_of :key
 
-  attr_accessible :key
+  attr_accessible :key, :active
 
   def name
     I18n.t('tags.' + key, :default => key.capitalize)

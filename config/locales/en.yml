@@ -8,6 +8,8 @@ en:
     list: "Listing Articles"
     search: "Search for articles"
     edit: "Editing Article"
+    title: 'Title'
+    content: 'Content'
     unfollow:
       success: 'Article was successfully unfollowed.'
       fail: 'There was an error unfollowing this article.'
@@ -56,11 +58,13 @@ en:
     mountain_bike_riding: "Mountain bike riding"
     river_fishing: "River Fishing"
     list: 'Tags'
+    title: 'Tags'
     new: 'New Tag'
 
-  province:
+  provinces:
     sofia: 'Sofia'
     title: 'Province'
+    list: 'Provinces'
     
   button:
     like: 'Like'

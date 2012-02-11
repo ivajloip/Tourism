@@ -12,7 +12,7 @@ describe Province do
 # TODO: fix this to something less specific
     it "name is localized" do
       province = build(:province, :key => 'sofia')
-      province.name.should eq I18n.t('province.sofia')
+      province.name.should eq I18n.t('provinces.sofia')
     end
   end
 
