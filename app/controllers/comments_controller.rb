@@ -1,9 +1,9 @@
 class CommentsController < ApplicationController
   before_filter :authenticate_user!
 
-  def create
-    @article = find_article
+  before_filter :load_article
 
+  def create
     @comment = @article.comments.new(params[:comment])
 
     @comment.author = current_user
@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
 
       to = @comment.article.followers_emails
       unless to.blank?
-        Notifier.new_comment(@comment).deliver
+        NotifierMailer.new_comment(@comment).deliver
       end
     else
       respond_to do |format|
@@ -51,7 +51,6 @@ class CommentsController < ApplicationController
 
   def add_opinion success_message, failure_message
     super(success_message, failure_message) do 
-      @article = find_article
       @comment = @article.comments.find(params[:comment_id])
       yield @comment
 
@@ -59,27 +58,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  def vote success_message, failure_message
-    @article = find_article
-    @comment = @article.comments.find(params[:comment_id])
-
-    yield @comment
-
-    if @comment.save
-      respond_to do |format|
-        format.html { redirect_to @article, notice: success_message }
-        format.json { head :ok }
-        format.js { render '/articles/comment_votes' }
-      end
-    else 
-      respond_to do |format|
-        format.html { redirect_to @article, notice: failure_message }
-        format.json { render json: comment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def find_article
-    Article.find(params[:article_id])
+  def load_article
+    @article = Article.find(params[:article_id])
   end
 end

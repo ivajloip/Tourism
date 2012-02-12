@@ -3,18 +3,18 @@
 # Yo ean use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $ = jQuery
 
-jQuery -> 
-  $(document).ready -> 
-    content = $('#comment_content');
-    title = content.attr('title');
-    content.val(title);
-
-    content.focus -> 
-      if (!$.data(this, 'edited'))
-        this.value = "";
-    content.change -> 
-      $.data(this, 'edited', this.value != "");
-    content.blur -> 
-      if (!$.data(this, 'edited')) 
-        content.val(title);
+#jQuery -> 
+#  $(document).ready -> 
+#    content = $('#comment_content');
+#    title = content.attr('title');
+#    content.val(title);
+#
+#    content.focus -> 
+#      if (!$.data(this, 'edited'))
+#        this.value = "";
+#    content.change -> 
+#      $.data(this, 'edited', this.value != "");
+#    content.blur -> 
+#      if (!$.data(this, 'edited')) 
+#        content.val(title);
 

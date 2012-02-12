@@ -3,18 +3,19 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_locale
 
-  def initialize 
-    @page_size = 2
-    super
+  before_filter :set_page_size
+
+  private
+
+  def set_page_size 
+    @page_size = params[:per] || 2
   end
-   
+
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end
 
   def is_admin
-    logger.debug "Controller is there #{self}. "
-
     if user_signed_in? and current_user.admin
       true
     else
@@ -34,7 +35,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-private 
   def add_opinion success_message, failure_message
     entity, container = yield
 

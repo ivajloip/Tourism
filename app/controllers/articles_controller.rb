@@ -1,9 +1,12 @@
 class ArticlesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show, :search]
+  
+  before_filter :load_article, :except => [:index, :new, :search, :create]
 
   before_filter :only => [:edit, :update, :destroy] do
-    verify_edit_permissions find_article
+    verify_edit_permissions @article
   end
+
 
   # GET /articles
   # GET /articles.json
@@ -20,7 +23,6 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
-    @article = find_article
     @comments = @article.comments.order_by(:name, :asc).page(params[:page]).per(@page_size)
 
     respond_to do |format|
@@ -42,7 +44,6 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1/edit
   def edit
-    @article = find_article
   end
 
   # POST /articles
@@ -59,7 +60,7 @@ class ArticlesController < ApplicationController
 
       to = current_user.followers_emails
       unless to.blank?
-        Notifier.article_added(current_user, @article).deliver
+        NotifierMailer.article_added(current_user, @article).deliver
       end
     else
       respond_to do |format|
@@ -72,13 +73,18 @@ class ArticlesController < ApplicationController
   # PUT /articles/1
   # PUT /articles/1.json
   def update
-    @article = find_article
-
-    respond_to do |format|
-      if @article.update_attributes(params[:article])
+    if @article.update_attributes(params[:article])
+      respond_to do |format|
         format.html { redirect_to @article, notice: 'Article was successfully updated.' }
         format.json { head :ok }
-      else
+      end
+
+      to = @article.followers_emails
+      unless to.blank?
+        NotifierMailer.article_edited(@article).deliver
+      end
+    else
+      respond_to do |format|
         format.html { render action: "edit" }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
@@ -88,7 +94,6 @@ class ArticlesController < ApplicationController
   # DELETE /articles/1
   # DELETE /articles/1.json
   def destroy
-    @article = find_article
     @article.destroy
 
     respond_to do |format|
@@ -147,13 +152,12 @@ class ArticlesController < ApplicationController
   end
 
 private
-  def find_article
-    Article.find(params[:id])
+  def load_article
+    @article = Article.find(params[:id])
   end
 
   def add_opinion success_message, failure_message
     super(success_message, failure_message) do 
-      @article = find_article
       yield @article
 
       [@article, @article]
