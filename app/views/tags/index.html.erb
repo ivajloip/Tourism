@@ -1,21 +1,19 @@
-<h1><%= t('tags.list') %></h1>
+<h1><%= t('tags.listing') %></h1>
 
 <%= render '/shared/error' %>
 
 <table>
-  <tr>
-    <th>Key</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <thead>
+    <tr>
+      <th><%= t '.name' %></th>
+      <th><%= t 'messages.destroy' %></th>
+    </tr>
+  </thead>
 
 <% @tags.each do |tag| %>
   <tr>
-    <td><%= tag.key %></td>
-    <td><%= link_to 'Show', tag %></td>
-    <td><%= link_to 'Edit', edit_tag_path(tag) %></td>
-    <td><%= link_to 'Destroy', tag, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to tag.name, tag %></td>
+    <td><%= link_to t('messages.destroy'), tag, confirm: t('messages.confirm.delete'), method: :delete %></td>
   </tr>
 <% end %>
 </table>
@@ -24,4 +22,4 @@
 
 <%= paginate @tags, :window => 2 %>
 
-<%= link_to 'New Tag', new_tag_path %>
+<%= link_to t('tags.new'), new_tag_path %>

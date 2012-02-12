@@ -1,6 +1,7 @@
 // Place all the styles related to the articles controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
 .vote_button {
   float: left;
   padding-right:2em;
@@ -22,6 +23,57 @@
   text-align: right;
 }
 
-pre {
-  white-space: pre-wrap;
+h1 {
+  padding: 0.5em;
+  margin: 0;
+  text-align: center; 
+  font: {
+    size: 3em;
+    weight: bold;
+  }
 }
+
+#article {
+  width: 100%;
+  height: 100%;
+  background-color: #d7dbd7;
+  border-radius: 3em;
+  padding: 1em 0em;
+}
+
+#votes, #opinion_buttons, #additional_details {
+  margin: 1em 40px;
+}
+
+#additional_details {
+  span:not(:first-child) {
+    padding: 1em 2em;
+    float: right;
+  }
+  span:first-child {
+    padding: 1em 0em;
+    float: left;
+  }
+}
+
+pre#article_body {
+  white-space: pre-wrap;
+  padding: 20px 40px;
+  border-radius: 3em;
+  background-color: #d7dbd7;
+
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+
+.google_like {
+  margin: 0 2em;
+  float: left;
+}
+
+.follow_button {
+  float: left;
+}
+

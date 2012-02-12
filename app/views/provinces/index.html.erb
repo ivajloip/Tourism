@@ -1,4 +1,4 @@
-<h1>Listing provinces</h1>
+<h1><%= t 'provinces.listing' %></h1>
 
 <% if flash[:error] %>
 <div id="error_explanation">
@@ -9,19 +9,17 @@
 <% end %>
 
 <table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <thead>
+    <tr>
+      <th><%= t '.name' %></th>
+      <th><%= t 'messages.destroy' %></th>
+    </tr>
+  </thead>
 
 <% @provinces.each do |province| %>
   <tr>
-    <td><%= province.name %></td>
-    <td><%= link_to 'Show', province %></td>
-    <td><%= link_to 'Edit', edit_province_path(province) %></td>
-    <td><%= link_to 'Destroy', province, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to province.name, province %></td>
+    <td><%= link_to t('messages.destroy'), province, confirm: t('messages.confirm.delete'), method: :delete %></td>
   </tr>
 <% end %>
 </table>
@@ -30,4 +28,4 @@
 
 <%= paginate @provinces, :window => 2 %>
 
-<%= link_to 'New Province', new_province_path %>
+<%= link_to t('provinces.new'), new_province_path %>

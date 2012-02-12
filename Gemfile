@@ -15,6 +15,8 @@ gem 'kaminari'
 gem 'devise'
 
 gem "recaptcha", :require => "recaptcha/rails"
+gem 'omniauth-openid'
+gem 'thin'
 
 # Gems used only for assets and not required
 # in production environments by default.

@@ -14,7 +14,8 @@ end
       :title => row['Заглавие'],
       :content => row['Съдържание'],
       :province => Factory(:province, :key => row['Околия']),
-      :active => true
+      :active => true,
+      :created_at => Time.new(2012, 2, 14)
     }
 
     Factory(:article, attributes)

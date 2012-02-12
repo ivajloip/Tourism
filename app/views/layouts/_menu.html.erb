@@ -1,12 +1,17 @@
-<%= "%s, %s" % [t('welcome', :default => 'Welcome'), 
-      user_signed_in? ? current_user.display_name : t('guest', :default => 'Guest')] %>
+<span id="welcome">
+  <%= t('messages.welcome', :default => 'Welcome') %>, 
+  <%= user_signed_in? ? link_to(current_user.display_name, user_path(current_user)) : t('messages.guest', :default => 'Guest') %>
+</span>      
 
 <nav>
   <section>
-    <ul>
+    <ul id="menu">
       <% menu_links.each do |key, path| %>
-        <%= link_to t(key), path %>
+        <li>
+          <%= link_to t(key), path %>
+        </li>
       <% end %>
     </ul>
+    <div class="clearfix" />
   </section>
 </nav>

@@ -7,14 +7,21 @@
   <%= csrf_meta_tags %>
 
   <%= yield :head %>
+
+  <!-- Update your html tag to include the itemscope and itemtype attributes -->
+  <html itemscope itemtype="http://schema.org/">
+
+  <!-- Add the following three tags inside head -->
+  <meta itemprop="name" content="foo asdf fds Tourism">
+  <meta itemprop="description" content="Find the best places to go in your spare time.">
 </head>
 <body>
-
-<header>
+<div id="content">
+  <header>
     <%= render "layouts/menu" %>
-</header>
+  </header>
 
-<%= yield %>
-
+  <%= yield %>
+<div>
 </body>
 </html>

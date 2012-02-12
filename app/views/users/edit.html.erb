@@ -14,7 +14,7 @@
   <%= f.password_field :password_confirmation %></div>
 
   <div>
-     <%= image_tag @user.avatar.url %>
+     <%= image_tag @user.avatar.url(:medium) %>
      <br />
      <%= f.label :new_avatar %> <br />
      <%= f.file_field :avatar %>

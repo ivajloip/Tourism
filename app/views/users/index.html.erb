@@ -1,21 +1,20 @@
 <h1>Listing users</h1>
 
 <table>
-  <tr>
-    <th>Display Name</th>
-    <th>email</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
+  <thead>
+    <tr>
+      <th><%= t '.display_name' %></th>
+      <th><%= t '.email' %></th>
+      <th><%= t '.following' %></th>
+      <th><%= t 'messages.destroy' %></th>
+    </tr>
+  </thead>
 <% @users.each do |user| %>
   <tr>
-    <td><%= user.display_name %></td>
+    <td><%= link_to user.display_name, user %></td>
     <td><%= user.email %></td>
-    <td><%= link_to 'Show', user %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <td><%= link_to 'Destroy', user, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= user.following_count %></td>
+    <td><%= link_to t('messages.destroy'), user, confirm: t('messages.confirm.delete'), method: :delete %></td>
   </tr>
 <% end %>
 </table>

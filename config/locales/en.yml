@@ -2,7 +2,18 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  messages:
+    welcome: "Welcome"
+    guest: "Guest"
+    show: "Show"
+    edit: "Edit"
+    destroy: "Destroy"
+    confirm:
+      delete: "Are you sure?"
+
   articles: 
+    show:
+      author: "Author"
     name: "Articles"
     new: "New Article"
     list: "Listing Articles"
@@ -28,8 +39,13 @@ en:
   users: 
     list: 'Users'
     logout: 'Sign out'
-
-  sign_up: 'Sign up'
+    sign_up: 'Sign up'
+    sign_in: 'Sign in'
+    sign_in_google: 'Sign in with Google'
+    index:
+      display_name: "Name"
+      email: "Email"
+      following: "Followers"
 
   helpers:
     label:
@@ -56,16 +72,22 @@ en:
       short: "%b %d"
       long: "%B %d, %Y at %H:%M"
   tags:
-    mountain_bike_riding: "Mountain bike riding"
-    river_fishing: "River Fishing"
+    index:
+      name: "Name"
     list: 'Tags'
     title: 'Tags'
     new: 'New Tag'
+    mountain_bike_riding: "Mountain bike riding"
+    river_fishing: "River Fishing"
 
   provinces:
-    sofia: 'Sofia'
-    title: 'Province'
+    title: 'Location'
     list: 'Provinces'
+    listing: 'Listing Provinces'
+    new: 'New Province'
+    index:
+      name: "Name"
+    sofia: 'Sofia'
     
   button:
     like: 'Like'

@@ -20,6 +20,55 @@ strong { font-weight:bold}
 a img { border:none}*/
 
 ol, ul, li { list-style:none}
+
 .clearfix { clear: both;}
+
 .no-margin { margin: 0;}
+
+body {
+    background-image: url('/background.jpg');
+}
+
+div#content {
+  margin: 20px 120px;
+  padding: 1em 2em;
+  background-color: #EEEEEE;
+  border-radius: 3em;
+}
+
+ul#menu li {
+  float: left;
+  margin: 0 1em;
+}
+
+#welcome {
+  float: left;
+  margin: 0 1em 0 40px;
+
+}
+
+div#content table {
+  margin: auto;
+  border: 1px solid;
+  border-collapse: collapse;
+  background-color: #DDD;
+}
+
+div#content table th {
+  border-collapse: collapse;
+  border: 1px solid;
+  width: 100%;
+  padding: 2em;
+}
+
+div#content table td {
+  border-collapse: collapse;
+  border: 1px solid;
+  text-align: center;
+}
+
+div#content table tbody tr:nth-child(odd) {
+  background-color: #888;
+  color: black;
+}
 

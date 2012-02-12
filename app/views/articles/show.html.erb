@@ -2,40 +2,60 @@
 
 <%= render '/shared/error' %>
 
-<p>
-  <b><%= t 'articles.title' %>:</b>
-  <%= @article.title %>
-</p>
+<section id="article">
+  <h1><%= @article.title %></h1>
+  
+  <pre id="article_body"><%= content @article %></pre>
+  
+  <hr />
 
-<p>
-  <b><%= t 'articles.content' %></b>
-  <pre><%= content @article %></pre>
-</p>
+  <div id="additional_details">
+    <span>
+      <b><%= t('.author') %></b>: 
+      <%= link_to @article.author_name, user_path(@article.author) %>, 
+      <b><%= t('date_created') %></b> <%= l @article.created_at, :format => :long %>
+    </span>
+    <span>
+      <b><%= t 'provinces.title' %>:</b>
+      <%= @article.province.name %>
+    </span>
+    <span>
+    <b><%= t 'tags.title' %>:</b>
+    <%= @article.tags.collect(&:name).join(', ') %>
+    </span>
+  
+    <div class="clearfix"></div>
+  </div>
+  
+  <div id="votes">
+    <%= votes @article %>
+  </div>
+  
+  <div id="opinion_buttons">
+    <%= button_to t("button.like"), { :action => "like" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
+    <%= button_to t("button.dislike"), { :action => "dislike" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
+  
+    <div id="follow_buttons" class="follow_button">
+      <%= follow_buttons @article %>
+    </div>
 
-<p>
-  <b><%= t 'provinces.title' %>:</b>
-  <%= @article.province.name %>
-</p>
+    <div class="google_like">
+<g:plusone annotation="inline"></g:plusone>
 
-<p>
-  <b><%= t 'tags.title' %>:</b>
-  <%= @article.tags.collect(&:name).join(', ') %>
-</p>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'bg'};
 
-<p>
- <%= t('author') %>: <%= @article.author_name %>, <%= t('date_created') %> <%= l @article.created_at, :format => :long %>
-</p>
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+    </div>
 
-<p id="votes">
-  <%= votes @article %>
-</p>
-
-<%= button_to t("button.like"), { :action => "like" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
-<%= button_to t("button.dislike"), { :action => "dislike" }, :method => :put, :remote => true, :form_class => 'vote_button' %>
-
-<span id="follow_buttons">
-  <%= follow_buttons @article %>
-</span>
+    <div class="clearfix"></div>
+  </div>
+</section>
 
 <%= link_to_edit @article %>
 

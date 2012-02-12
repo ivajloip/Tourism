@@ -7,7 +7,7 @@ class User
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable, :omniauthable,
          :recoverable, :rememberable, :trackable, :validatable
 
   field :display_name
@@ -38,5 +38,15 @@ class User
 
   def editable_by?(user)
     self == user or user.try(:admin?)
+  end
+
+  def self.find_for_open_id(access_token, signed_in_resource = nil)
+    data = access_token.info
+    if user = User.where(:email => data["email"]).first
+        user
+    else
+        User.create!(:email => data["email"], :password => Devise.friendly_token[0,20], 
+                     :display_name => data[:name])
+    end
   end
 end

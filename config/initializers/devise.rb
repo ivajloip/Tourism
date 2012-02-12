@@ -14,6 +14,7 @@ Devise.setup do |config|
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
   require 'devise/orm/mongoid'
+  require 'openid/store/filesystem'
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
@@ -208,4 +209,6 @@ Devise.setup do |config|
   # end
 
   config.encryptor = :bcrypt
+
+  config.omniauth :open_id, store: OpenID::Store::Filesystem.new('/tmp'), name: 'google', identifier: 'https://www.google.com/accounts/o8/id', require: 'omniauth-openid'
 end

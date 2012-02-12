@@ -1,23 +1,27 @@
-<h2><%= t 'list', :default => 'List' %></h2>
-
 <table>
   <thead>
     <tr>
       <th><%= t('articles.title') %></th>
+      <th><%= t('articles.created_at') %></th>
+      <th><%= t('articles.province') %></th>
       <th><%= t('articles.author') %></th>
-      <th><%= t 'show' %></th>
-      <th><%= t 'edit' %></th>
-      <th></th>
+      <th><%= t('articles.liking') %></th>
+      <th><%= t('articles.disliking') %></th>
+      <th><%= t('articles.following') %></th>
+      <th><%= t 'messages.destroy' %></th>
     </tr>
   </thead>
 
   <tbody>
 <% @articles.each do |article| %>
     <tr>
-      <td><%= article.title %></td>
-      <td><%= article.author_name %></td>
-      <td><%= link_to t('show'), article %></td>
-      <td><%= link_to_edit article %></td>
+      <td><%= link_to article.title, article %></td>
+      <td><%= l article.created_at, :format => :default %></td>
+      <td><%= article.province.name %></td>
+      <td><%= link_to article.author_name, article.author %></td>
+      <td><%= article.liking_count %></td>
+      <td><%= article.disliking_count %></td>
+      <td><%= article.following_count %></td>
       <td><%= link_to_delete article %></td>
     </tr>
 <% end %>
