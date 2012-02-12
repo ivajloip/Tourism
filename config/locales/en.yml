@@ -39,6 +39,7 @@ en:
   unsufficient_privileges: "You don't have the required permissions to perform this action"
   date_created: "Published on"
   edit: "Edit"
+  show: "Show"
   back: "Back"
   apply: "Apply"
   liking: 'Liking'

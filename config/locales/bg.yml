@@ -1,6 +1,8 @@
 bg:
   articles:
     name: "Статии"
+    title: "Заглавие"
+    author: "Автор"
   show: 'Виж'
   back: 'Назад'
   home: 'Начало'

@@ -1,22 +1,26 @@
 <h2><%= t 'list', :default => 'List' %></h2>
 
 <table>
-  <tr>
-    <th><%= t('title') %></th>
-    <th><%= t('author') %></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <thead>
+    <tr>
+      <th><%= t('articles.title') %></th>
+      <th><%= t('articles.author') %></th>
+      <th><%= t 'show' %></th>
+      <th><%= t 'edit' %></th>
+      <th></th>
+    </tr>
+  </thead>
 
+  <tbody>
 <% @articles.each do |article| %>
-  <tr>
-    <td><%= article.title %></td>
-    <td><%= article.author_name %></td>
-    <td><%= link_to 'Show', article %></td>
-    <td><%= link_to_edit article %></td>
-    <td><%= link_to_delete article %></td>
-  </tr>
+    <tr>
+      <td><%= article.title %></td>
+      <td><%= article.author_name %></td>
+      <td><%= link_to t('show'), article %></td>
+      <td><%= link_to_edit article %></td>
+      <td><%= link_to_delete article %></td>
+    </tr>
 <% end %>
+  </tbody>
 </table>
 
