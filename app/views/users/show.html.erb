@@ -19,7 +19,7 @@
   <%= @user.articles.count %>
 </p>
 
-<p id="votes">
+<p id="user_votes">
   <%= votes @user %>
 </p>
 
@@ -28,5 +28,6 @@
 </span>
 
 <% if @user.editable_by?(current_user) %>
-  <%= link_to t('Edit'), edit_user_path(@user) %>
+  <%= link_to t('Edit'), edit_user_path(@user) %> |
+  <%= link_to t('messages.destroy'), @user, confirm: t('messages.confirm.delete'), method: :delete %>
 <% end %>

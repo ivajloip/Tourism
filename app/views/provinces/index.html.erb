@@ -12,14 +12,12 @@
   <thead>
     <tr>
       <th><%= t '.name' %></th>
-      <th><%= t 'messages.destroy' %></th>
     </tr>
   </thead>
 
 <% @provinces.each do |province| %>
   <tr>
     <td><%= link_to province.name, province %></td>
-    <td><%= link_to t('messages.destroy'), province, confirm: t('messages.confirm.delete'), method: :delete %></td>
   </tr>
 <% end %>
 </table>
@@ -28,4 +26,4 @@
 
 <%= paginate @provinces, :window => 2 %>
 
-<%= link_to t('provinces.new'), new_province_path %>
+<%= link_to t('provinces.new.title'), new_province_path %>

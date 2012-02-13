@@ -8,7 +8,6 @@
       <th><%= t('articles.liking') %></th>
       <th><%= t('articles.disliking') %></th>
       <th><%= t('articles.following') %></th>
-      <th><%= t 'messages.destroy' %></th>
     </tr>
   </thead>
 
@@ -22,7 +21,6 @@
       <td><%= article.liking_count %></td>
       <td><%= article.disliking_count %></td>
       <td><%= article.following_count %></td>
-      <td><%= link_to_delete article %></td>
     </tr>
 <% end %>
   </tbody>

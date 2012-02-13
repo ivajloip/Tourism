@@ -461,28 +461,28 @@ describe ArticlesController do
     end
 
     it "synthesize correct author_id query" do
-      article_param = { :author_id => 'author_id' }
+      query_param = { :author_id => 'author_id' }
 
-      Article.all_visible.should_receive(:where).with(article_param)
+      Article.all_visible.should_receive(:where).with(query_param)
 
-      search_articles(article_param)
+      search_articles({}, query_param)
     end
     
     it "synthesize correct title query" do
-      article_param = { :title => 'title' }
+      query_param = { :title => 'title' }
       expected_query = { :title => /title/ }
 
       Article.all_visible.should_receive(:where).with(expected_query)
 
-      search_articles(article_param)
+      search_articles({}, query_param)
     end
 
     it "synthesize correct province_id query" do
-      article_param = { 'province_id' => 'province_id' }
+      query_param = { 'province_id' => 'province_id' }
 
-      Article.all_visible.should_receive(:where).with(article_param)
+      Article.all_visible.should_receive(:where).with(query_param)
 
-      search_articles(article_param)
+      search_articles({}, query_param)
     end
 
     it "search the correct page for pagination" do
@@ -491,12 +491,11 @@ describe ArticlesController do
     end
 
     it "synthesize correctly multiple params" do
-      article_param = { :title => 'title', :author_id => 'author_id', 'province_id' => 'province_id' }
-
       day, month, year = Time.now.to_a[3..5]
 
       query_param = { 'start_date(1i)' => year, 'start_date(2i)' => month, 'start_date(3i)' => day, 
-                      'end_date(1i)' => year, 'end_date(2i)' => month, 'end_date(3i)' => (day + 1) }
+                      'end_date(1i)' => year, 'end_date(2i)' => month, 'end_date(3i)' => (day + 1),
+                      :title => 'title', :author_id => 'author_id', 'province_id' => 'province_id' }
 
       expected_dates_query = { "$gte" => Time.new(year, month, day), 
                                "$lt" => Time.new(year, month, day + 1) }
@@ -506,7 +505,7 @@ describe ArticlesController do
 
       Article.all_visible.should_receive(:where).with(expected_query)
 
-      search_articles(article_param, query_param)
+      search_articles({}, query_param)
     end
   end
 end

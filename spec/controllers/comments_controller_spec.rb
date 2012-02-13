@@ -77,7 +77,7 @@ describe CommentsController do
       comment.stub save: true
       xhr :post, :create, article_id: article_id
 
-      controller.should render_template('/articles/comments') 
+      controller.should render_template('/comments/comments') 
     end
 
     it "does nothing on ajax failure" do

@@ -6,14 +6,12 @@
   <thead>
     <tr>
       <th><%= t '.name' %></th>
-      <th><%= t 'messages.destroy' %></th>
     </tr>
   </thead>
 
 <% @tags.each do |tag| %>
   <tr>
     <td><%= link_to tag.name, tag %></td>
-    <td><%= link_to t('messages.destroy'), tag, confirm: t('messages.confirm.delete'), method: :delete %></td>
   </tr>
 <% end %>
 </table>

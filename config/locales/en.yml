@@ -10,6 +10,9 @@ en:
     destroy: "Destroy"
     confirm:
       delete: "Are you sure?"
+    active: "Active"
+    key: "Key"
+    name: "Name"
 
   articles: 
     show:
@@ -17,7 +20,9 @@ en:
     name: "Articles"
     new: "New Article"
     list: "Listing Articles"
-    search: "Search for articles"
+    search: 
+      title: "Search for articles"
+      search: "Filter"
     edit: "Editing Article"
     title: 'Title'
     content: 'Content'
@@ -33,6 +38,7 @@ en:
     like:
       success: 'Article was successfully liked.'
       fail: 'There was an error liking this article.'
+    count: "Articles count"
 
   greet_username: "%{message}, %{user}!"
 
@@ -42,6 +48,7 @@ en:
     sign_up: 'Sign up'
     sign_in: 'Sign in'
     sign_in_google: 'Sign in with Google'
+    choose: "Select User"
     index:
       display_name: "Name"
       email: "Email"
@@ -72,6 +79,7 @@ en:
       short: "%b %d"
       long: "%B %d, %Y at %H:%M"
   tags:
+    choose: "Select Tags"
     index:
       name: "Name"
     list: 'Tags'
@@ -79,12 +87,16 @@ en:
     new: 'New Tag'
     mountain_bike_riding: "Mountain bike riding"
     river_fishing: "River Fishing"
+    edit:
+      title: "Editing Tag"
 
   provinces:
+    choose: 'Select Province'
     title: 'Location'
     list: 'Provinces'
     listing: 'Listing Provinces'
-    new: 'New Province'
+    new: 
+      title: 'New Province'
     index:
       name: "Name"
     sofia: 'Sofia'

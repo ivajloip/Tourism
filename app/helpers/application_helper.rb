@@ -1,7 +1,7 @@
 module ApplicationHelper
   def menu_links 
     links = { 'home' => '/', 'articles.name' => articles_path, 
-              'articles.search' => search_articles_path }
+              'articles.search.title' => search_articles_path }
 
     if user_signed_in? 
       if current_user.admin?

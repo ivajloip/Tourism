@@ -41,6 +41,10 @@ h1 {
   padding: 1em 0em;
 }
 
+.field, .actions {
+  text-align: center;
+}
+
 #votes, #opinion_buttons, #additional_details {
   margin: 1em 40px;
 }
@@ -54,6 +58,11 @@ h1 {
     padding: 1em 0em;
     float: left;
   }
+}
+
+#article_content {
+  margin-left: 10%;
+  width: 80%;
 }
 
 pre#article_body {
@@ -77,3 +86,12 @@ pre#article_body {
   float: left;
 }
 
+.left {
+  width:40%;
+  float: left;
+}
+
+.right {
+  width:40%;
+  float: right;
+}

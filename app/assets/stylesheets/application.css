@@ -52,6 +52,7 @@ div#content table {
   border: 1px solid;
   border-collapse: collapse;
   background-color: #DDD;
+  width: 100%;
 }
 
 div#content table th {

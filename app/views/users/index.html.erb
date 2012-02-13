@@ -6,7 +6,6 @@
       <th><%= t '.display_name' %></th>
       <th><%= t '.email' %></th>
       <th><%= t '.following' %></th>
-      <th><%= t 'messages.destroy' %></th>
     </tr>
   </thead>
 <% @users.each do |user| %>
@@ -14,7 +13,6 @@
     <td><%= link_to user.display_name, user %></td>
     <td><%= user.email %></td>
     <td><%= user.following_count %></td>
-    <td><%= link_to t('messages.destroy'), user, confirm: t('messages.confirm.delete'), method: :delete %></td>
   </tr>
 <% end %>
 </table>

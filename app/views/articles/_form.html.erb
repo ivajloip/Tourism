@@ -11,7 +11,45 @@
     </div>
   <% end %>
 
-  <%= render :partial => 'fields', :locals => { :f => f, :fields_to_render => [:content] } %>
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :province_id %><br />
+    <%= f.collection_select :province_id, Province.all_visible(current_user), :id, :name, { :include_blank => true } %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :tag_ids %><br />
+    <%= f.collection_select :tag_ids, Tag.all_visible(current_user), :id, :name, {}, :multiple => true, :size => 6 %>
+  </div>
+
+  <div class="field">
+    <%= text_field_tag :image_text, '', :placeholder => 'image text' %>
+    <%= text_field_tag :image_url, '', :placeholder => 'image_url' %>
+
+    <%= button_tag(:type => 'button', id: 'add_image', onclick: "$.fn.addImageTag();") do
+          'Add image'
+        end 
+    %>
+  </div>
+
+  <div>
+
+  </div>
+  
+  <div class="field">
+    <%= f.label :content %><br />
+    <%= f.text_area :content %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :active %><br />
+    <%= f.check_box :active %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

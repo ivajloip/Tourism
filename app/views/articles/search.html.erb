@@ -1,10 +1,62 @@
-<h1><%= t('articles.search', :default => "Search for articles") %></h1>
+<h1><%= t('.title', :default => "Search for articles") %></h1>
 
+<% if false %>
 <%= form_for :article, :url => { :action => :search }, :method => :get do |f| %>
   <%= render :partial => 'fields', locals: { :f => f, :fields_to_render => [ :author, :end_date, :start_date ] } %>
 
   <div class="actions">
     <%= f.submit t(:search, :default => 'Search') %>
+  </div>
+<% end %>
+<% end %>
+
+<%= form_tag(search_articles_path, method: :get) do %>
+  <div class="field">
+    <%= label :query, :title %><br />
+    <%= text_field :query, :title %>
+  </div>
+
+  <div>
+  <div class="left">
+    <div class="field">
+    <%= select(:query, :province_id, options_from_collection_for_select(Province.all_visible(current_user), :id, :name), 
+                { :include_blank => t('provinces.choose') }) %>
+    </div>
+
+    <div class="field">
+    <%= label :query, :tag_ids, t('tags.title') %><br />
+    <%= select :query, :tag_ids, options_from_collection_for_select(Tag.all_visible(current_user), :id, :name), {}, 
+               :multiple => true, :size => 6 %>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="field">
+      <%= label :query, :author_id, t('articles.author') %><br />
+      <%= select :query, :author_id, options_from_collection_for_select(@authors, :id, :display_name), :include_blank => t('users.choose') %>
+    </div>
+
+    <div class="field">
+      <%= label :query, :start_date %><br />
+      <%= date_select :query, :start_date, :include_blank => true %>
+    </div>
+    
+    <div class="field">
+      <%= label :query, :end_date %><br />
+      <%= date_select :query, :end_date, :include_blank => true %>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+  </div>
+  
+  <div class="field">
+    <%= label :query, :active, t('messages.active') %>
+    <%= check_box :query, :active %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag t('.search') %>
   </div>
 <% end %>
 

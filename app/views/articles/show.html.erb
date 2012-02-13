@@ -57,7 +57,10 @@
   </div>
 </section>
 
-<%= link_to_edit @article %>
+<% if @article.editable_by?(current_user) %>
+  <%= link_to_edit @article %> |
+  <%= link_to_delete @article %>
+<% end %>
 
 <% if user_signed_in? %>
 <section>
@@ -73,5 +76,5 @@
 <% end %>
 
 <span id="comments">
-  <%= render 'comments' %>
+  <%= render '/comments/comments' %>
 </span>

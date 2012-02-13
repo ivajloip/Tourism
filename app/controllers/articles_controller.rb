@@ -28,6 +28,7 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @article }
+      format.js { render '/comments/comments' }
     end
   end
 
@@ -171,7 +172,7 @@ private
 
     result = {}
 
-    form_param = :article
+    form_param = :query
 
     result[:created_at] = created_at_limits
 
@@ -205,6 +206,6 @@ private
     exceptions = ['tag_ids', 'title']
     fields = Article.attr_accessible[:default] - exceptions
 
-    params[:article].select { |key, value| fields.include?(key) }
+    params[:query].try(:select) { |key, value| fields.include?(key) }
   end
 end

@@ -1,10 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Name:</b>
+  <b><%= t('messages.name') %></b>
   <%= @province.name %>
 </p>
 
-
-<%= link_to 'Edit', edit_province_path(@province) %> |
-<%= link_to 'Back', provinces_path %>
+<% if user_signed_in? and current_user.try(:admin?) %>
+  <%= link_to t('messages.edit'), edit_province_path(@province) %> |
+  <%= link_to t('messages.destroy'), @province, confirm: t('messages.confirm.delete'), method: :delete %>
+<% end %>

@@ -1,5 +1,5 @@
 <% if @comments.size > 0 %>
-  <h2>Comments</h2>
+  <h2><%= t('comments.title') %></h2>
 
   <ul>
   <% for comment in @comments %>
@@ -23,6 +23,6 @@
   </ul>
 
   <div>
-    <%= paginate @comments, :window => 2, :params => { :controller => 'articles', :action => 'show', :id => @article._id } %>
+    <%= paginate @comments, :window => 2, :params => { :controller => 'articles', :action => 'show', :id => @article._id }, remote: true %>
   </div>
 <% end %>

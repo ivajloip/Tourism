@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
       respond_to do |format|
         format.html { redirect_to @article, :notice => "Comment created!" }
         format.json { render json: @article, status: :created, location: @article }
-        format.js { render '/articles/comments' }
+        format.js { render '/comments/comments' }
       end
 
       to = @comment.article.followers_emails
