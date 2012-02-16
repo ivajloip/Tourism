@@ -42,4 +42,5 @@ group :test do
 
   gem 'cucumber-rails'
   gem 'capybara'
+  gem 'capybara-webkit'
 end

@@ -8,6 +8,8 @@ module NavigationHelpers
         articles_path
       when /страницата за нова статия/
         new_article_path
+      when /станицата на първата статия/
+        article_path(Article.first)
       else
         raise "Can't find mapping from \"#{page_name}\" to a path.\n" +
           "Now, go and add a mapping in #{__FILE__}"

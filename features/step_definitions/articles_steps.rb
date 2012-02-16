@@ -26,6 +26,10 @@ end
   Factory(:province, key: 'sofia')
 end
 
+Дадено 'има статия' do
+  Factory(:article)
+end
+
 Когато 'попълня нова статия' do 
   fill_in 'Title', with: 'Test title'
   select 'Sofia', :from => 'Province'
@@ -45,4 +49,16 @@ end
   within '#notice' do
     page.should have_content('Article was successfully created.')
   end
+end
+
+То /трябва статията да е харесана "([^"]*)" път(?:и)? и да не е харесана "([^"]*)" път(?:и)?/ do |likes, dislikes|
+  within '#votes' do
+    page.should have_content("#{likes} Liking, #{dislikes} Disliking")
+  end
+end
+
+То 'трябва да има коментар с тяло "$body"' do |body|
+  article = Article.where(:title => 'Title')
+  article.exists?.should be_true
+  article.first.comments.map(&:content).should include(body)
 end
