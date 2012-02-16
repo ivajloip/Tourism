@@ -13,6 +13,9 @@
 # Ignore captcha settings
 /config/initializers/recaptcha.rb
 
+# Ignore uploaded avatars
+/public/system/avatars/4f*
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
